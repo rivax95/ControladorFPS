@@ -17,19 +17,27 @@ namespace Alex.Controller
     public class Controller : MonoBehaviour
     {
 
-
+        //Variables publicas
         #region VariablesPublicas
 
         [HideInInspector] public float walkSpeed = 6.75f;
         [HideInInspector] public float runSpeed = 10f;
-        [HideInInspector] public float crunchSpeed = 8f;
+        [HideInInspector] public float crunchSpeed = 4f;
+        [HideInInspector]
+        public float jumpSpeed = 8f;
         [HideInInspector] public float gravity = 20f;
+        public LayerMask groundLayer;
         #endregion
-        #region VariablesPrivadas
+        //Variables privadas
+        #region VariablesPrivadas 
+        private float default_ControllerHeight;
+        private float camHeight;
+        private float rayDistance;
+
         private Transform firstPerson_View;
         private Transform FirstPerson_Camera;
 
-        private Vector3 firstPerson_View_Rotation = Vector3.zero;
+       
 
         private float speed;
         private bool is_Moving, is_Grounded, is_Crouching;
@@ -43,20 +51,30 @@ namespace Alex.Controller
         private float antiBumpFactor = 0.75f;
         private CharacterController charController;
         private Vector3 moveDirection = Vector3.zero;
+        private Vector3 default_CamPos;
+        private Vector3 firstPerson_View_Rotation = Vector3.zero;
         #endregion
+        #region Inicializadores
         void Start()
         {
             firstPerson_View = transform.Find("FPS View").transform;
             charController = GetComponent<CharacterController>();
             speed = walkSpeed;
             is_Moving = false;
+                        // altura por la mitad mas el radio
+            rayDistance = charController.height * 0.5f + charController.radius;
+            default_ControllerHeight = charController.height;
+            default_CamPos = firstPerson_View.localPosition;
         }
-
+        #endregion
+        #region Actualizadores
 
         void Update()
         {
             PlayerMovement();
         }
+        #endregion
+        #region Movimiento
         /// <summary>
         /// Movimiento del jugador
         /// </summary>
@@ -66,6 +84,7 @@ namespace Alex.Controller
      
         void PlayerMovement()
         {
+            
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
 
@@ -103,16 +122,21 @@ namespace Alex.Controller
             }
             inputY = Mathf.Lerp(inputY, inputY_Set, Time.deltaTime * 19f);
             inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
-            //Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
+            //NOTEE Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
             inputModifyFactor = Mathf.Lerp(inputModifyFactor, (inputY_Set != 0 && inputX_Set != 0 && limitDiagonalSpeed) ? 0.75f : 1, Time.deltaTime * 19f);
 
             firstPerson_View_Rotation = Vector3.Lerp(firstPerson_View_Rotation, Vector3.zero, Time.deltaTime * 5f);
 
             firstPerson_View.localEulerAngles = firstPerson_View_Rotation;
+            // NOTEE cosas que hara en el suelo
             if (is_Grounded)
             {
+                PlayerCrouchAndSprint();
                 moveDirection = new Vector3(inputX * inputModifyFactor, -antiBumpFactor, inputY * inputModifyFactor);
                 moveDirection = transform.TransformDirection(moveDirection) * speed;
+
+                // LLAMADAS DE SALTO
+                playerJump();
             }
             moveDirection.y -= gravity * Time.deltaTime;
 
@@ -120,7 +144,97 @@ namespace Alex.Controller
 
             is_Moving = charController.velocity.magnitude > 0.15f;
         }
+        void PlayerCrouchAndSprint()
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if (!is_Crouching)
+                {
+                    is_Crouching = true;
+                }
+                else
+                {
+                    if (CanGetUp())
+                    {
+                        is_Crouching = false;
+                    }
+                }
+                StopCoroutine(MoveCameraCrounch());
+                StartCoroutine(MoveCameraCrounch());
 
+            }
+            if (is_Crouching)
+            {
+                speed = crunchSpeed;
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    speed = runSpeed;
+                }
+                else
+                {
+                    speed = walkSpeed;
+                }
+            }
+        }
+        bool CanGetUp()
+        {
+            Ray groundRay = new Ray(transform.position, transform.up);
+            RaycastHit groundHit;
+            if (Physics.SphereCast(groundRay, charController.radius + 0.05f, out groundHit, rayDistance, groundLayer))
+            {
+                if (Vector3.Distance(transform.position, groundHit.point) < 2.3f)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        void playerJump() //Salto ME CAGO EN LA PUTA OSTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        {
+            if(Input.GetKeyDown(KeyCode.Space)){
+                if (is_Crouching)
+                {
+                    if (CanGetUp())
+                    {
+                        is_Crouching = false;
+                        StopCoroutine(MoveCameraCrounch());
+                        StartCoroutine(MoveCameraCrounch());
+                    }
+                }
+                else
+                {
+                    moveDirection.y = jumpSpeed;
+                }
+            }
+          
+        }
+        #endregion
+#region corrutinasMovimiento
+        IEnumerator MoveCameraCrounch()
+        {
+            charController.height = is_Crouching ? default_ControllerHeight / 1.5f : default_ControllerHeight;
 
-    } //Fin
+            charController.center = new Vector3(0f, charController.height / 2f, 0f);
+
+            camHeight = is_Crouching ? default_ControllerHeight / 1.5f : default_CamPos.y;
+
+            //if (is_Crouching)
+            //{
+            //    camHeight = default_CamPos.y / 1.5f;
+            //}
+
+            while (Mathf.Abs(camHeight - firstPerson_View.localPosition.y) > 0.001f)
+            {
+                firstPerson_View.localPosition = Vector3.Lerp(firstPerson_View.localPosition,
+                    new Vector3(default_CamPos.x, camHeight, default_CamPos.z),
+                    Time.deltaTime * 11f);
+                yield return null;
+            }
+        }
+#endregion
+
+    } //Fin de la clase
 }
