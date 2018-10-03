@@ -179,14 +179,15 @@ namespace Alex.Controller
                 }
             }
         }
-        bool CanGetUp()
+        bool CanGetUp() // no funciona
         {
             Ray groundRay = new Ray(transform.position, transform.up);
             RaycastHit groundHit;
-            if (Physics.SphereCast(groundRay, charController.radius + 0.05f, out groundHit, rayDistance, groundLayer))
+            if (Physics.SphereCast(groundRay, charController.radius + 0.05f, out groundHit, rayDistance, groundLayer)) 
             {
                 if (Vector3.Distance(transform.position, groundHit.point) < 2.3f)
                 {
+                    Debug.Log("No deja");
                     return false;
                 }
             }
@@ -230,7 +231,8 @@ namespace Alex.Controller
             {
                 firstPerson_View.localPosition = Vector3.Lerp(firstPerson_View.localPosition,
                     new Vector3(default_CamPos.x, camHeight, default_CamPos.z),
-                    Time.deltaTime * 11f);
+                    Time.deltaTime * 10f);
+                Debug.Log("Soy un contador");
                 yield return null;
             }
         }
