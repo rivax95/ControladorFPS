@@ -22,7 +22,7 @@ namespace Alex.Controller
 
         [HideInInspector] public float walkSpeed = 6.75f;
         [HideInInspector] public float runSpeed = 10f;
-        [HideInInspector] public float crunchSpeed = 4f;
+         public float crunchSpeed = 4f;
         [HideInInspector]
         public float jumpSpeed = 8f;
         [HideInInspector] public float gravity = 20f;
@@ -39,7 +39,7 @@ namespace Alex.Controller
 
        
 
-        private float speed;
+        public float speed;
         private bool is_Moving, is_Grounded, is_Crouching;
 
         private float inputX, inputY;
@@ -62,7 +62,7 @@ namespace Alex.Controller
             speed = walkSpeed;
             is_Moving = false;
                         // altura por la mitad mas el radio
-            rayDistance = charController.height * 0.5f + charController.radius;
+            rayDistance = charController.height * 0.5f + charController.radius + 0.3f;
             default_ControllerHeight = charController.height;
             default_CamPos = firstPerson_View.localPosition;
         }
@@ -84,6 +84,7 @@ namespace Alex.Controller
      
         void PlayerMovement()
         {
+            Debug.Log(crunchSpeed);
             
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
@@ -108,11 +109,11 @@ namespace Alex.Controller
 
                 if (Input.GetKey(KeyCode.A))
                 {
-                    inputX_Set = 1f;
+                    inputX_Set = -1f;
                 }
                 else
                 {
-                    inputX_Set = -1f;
+                    inputX_Set = 1f;
                 }
 
             }
@@ -143,6 +144,7 @@ namespace Alex.Controller
             is_Grounded = (charController.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
 
             is_Moving = charController.velocity.magnitude > 0.15f;
+           
         }
         void PlayerCrouchAndSprint()
         {
@@ -181,18 +183,27 @@ namespace Alex.Controller
         }
         bool CanGetUp() // no funciona
         {
+            //Debug.Log("entro");
             Ray groundRay = new Ray(transform.position, transform.up);
             RaycastHit groundHit;
+           
             if (Physics.SphereCast(groundRay, charController.radius + 0.05f, out groundHit, rayDistance, groundLayer)) 
             {
+                Debug.Log("tiro la esfera");
+             //no entra
                 if (Vector3.Distance(transform.position, groundHit.point) < 2.3f)
                 {
                     Debug.Log("No deja");
                     return false;
                 }
             }
+            //Debug.Log(groundHit.collider.tag);
             return true;
         }
+        //void OnDrawGizmos()
+        //{
+        //    Gizmos.DrawSphere(transform.position, charController.radius + 0.05f);
+        //}
         void playerJump() //Salto ME CAGO EN LA PUTA OSTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         {
             if(Input.GetKeyDown(KeyCode.Space)){
@@ -200,6 +211,7 @@ namespace Alex.Controller
                 {
                     if (CanGetUp())
                     {
+                        
                         is_Crouching = false;
                         StopCoroutine(MoveCameraCrounch());
                         StartCoroutine(MoveCameraCrounch());
@@ -207,6 +219,8 @@ namespace Alex.Controller
                 }
                 else
                 {
+                    moveDirection.x *= 0.5f;
+                    moveDirection.z *= 0.5f;
                     moveDirection.y = jumpSpeed;
                 }
             }
@@ -232,7 +246,7 @@ namespace Alex.Controller
                 firstPerson_View.localPosition = Vector3.Lerp(firstPerson_View.localPosition,
                     new Vector3(default_CamPos.x, camHeight, default_CamPos.z),
                     Time.deltaTime * 10f);
-                Debug.Log("Soy un contador");
+                //Debug.Log("Soy un contador");
                 yield return null;
             }
         }
