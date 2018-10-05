@@ -135,8 +135,12 @@ namespace Alex.Controller
                 inputX_Set = 0f;
             }
             
-            inputY = Mathf.Lerp(inputY, inputY_Set, Time.deltaTime * 19f);
+            inputY = Mathf.Lerp(inputY , inputY_Set, Time.deltaTime * 19f);
             inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
+            if (inputY < -0.5f) inputY = -0.5f; //Note TEST
+            if (inputX<  -0.5f) inputX = -0.5f;//Note TEST
+            if (inputX > 0.5f) inputX = 0.5f;//Note TEST
+            //Notee hace lo mismo con la x
             //NOTEE Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
             inputModifyFactor = Mathf.Lerp(inputModifyFactor, (inputY_Set != 0 && inputX_Set != 0 && limitDiagonalSpeed) ? 0.75f : 1, Time.deltaTime * 19f);
 
