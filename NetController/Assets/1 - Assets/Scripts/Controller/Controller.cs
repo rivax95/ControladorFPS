@@ -40,19 +40,22 @@ namespace Alex.Controller
        
 
         public float speed;
-        private bool is_Moving, is_Grounded, is_Crouching;
+        private bool is_Moving, is_Grounded, is_Crouching,is_Shiftting;
 
         private float inputX, inputY;
         private float inputX_Set, inputY_Set;
         private float inputModifyFactor;
 
         private bool limitDiagonalSpeed = true;
-
+        public bool WalkForward;
         private float antiBumpFactor = 0.75f;
         private CharacterController charController;
         private Vector3 moveDirection = Vector3.zero;
         private Vector3 default_CamPos;
         private Vector3 firstPerson_View_Rotation = Vector3.zero;
+
+     
+        private PlayerAnimations playerAnimations;
         #endregion
         #region Inicializadores
         void Start()
@@ -65,6 +68,7 @@ namespace Alex.Controller
             rayDistance = charController.height * 0.5f + charController.radius + 0.3f;
             default_ControllerHeight = charController.height;
             default_CamPos = firstPerson_View.localPosition;
+            playerAnimations = GetComponent<PlayerAnimations>();
         }
         #endregion
         #region Actualizadores
@@ -75,6 +79,13 @@ namespace Alex.Controller
         }
         #endregion
         #region Movimiento
+        void PasarAnimaciones()
+        {
+            Debug.Log(charController.velocity.x +"x---z"+ charController.velocity.z);
+            playerAnimations.Movement(charController.velocity.magnitude);
+            playerAnimations.PlayerForward(inputY);
+            playerAnimations.PlayerMovementX(inputX);
+        }
         /// <summary>
         /// Movimiento del jugador
         /// </summary>
@@ -84,17 +95,19 @@ namespace Alex.Controller
      
         void PlayerMovement()
         {
-            Debug.Log(crunchSpeed);
+            Debug.Log(charController.velocity.x);
             
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
 
                 if (Input.GetKey(KeyCode.W))
                 {
+                    WalkForward = true;
                     inputY_Set = 1f;
                 }
                 else
                 {
+                    WalkForward = false;
                     inputY_Set = -1f;
                 }
 
@@ -121,6 +134,7 @@ namespace Alex.Controller
             {
                 inputX_Set = 0f;
             }
+            
             inputY = Mathf.Lerp(inputY, inputY_Set, Time.deltaTime * 19f);
             inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
             //NOTEE Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
@@ -138,13 +152,42 @@ namespace Alex.Controller
 
                 // LLAMADAS DE SALTO
                 playerJump();
+                Shifteo();
+             
             }
             moveDirection.y -= gravity * Time.deltaTime;
 
             is_Grounded = (charController.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
 
             is_Moving = charController.velocity.magnitude > 0.15f;
+            PasarAnimaciones();
            
+        }
+        void Shifteo()
+        {
+            if (Input.GetKey(KeyCode.LeftAlt))
+            {
+                if ((CanGetUp())&&(is_Crouching))
+                {
+                    is_Crouching = false;
+                    StopCoroutine(MoveCameraCrounch());
+                    StartCoroutine(MoveCameraCrounch());
+                    return;
+                }
+                else
+                {
+                    if (is_Grounded)
+                    {
+                        is_Shiftting = true;
+                        moveDirection.z *= 0.5f;
+                        moveDirection.x *= 0.5f;
+                    }
+                }
+            }
+            if (Input.GetKeyUp(KeyCode.LeftAlt))
+            {
+                is_Shiftting = false;
+            }
         }
         void PlayerCrouchAndSprint()
         {
@@ -171,14 +214,18 @@ namespace Alex.Controller
             }
             else
             {
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    speed = runSpeed;
-                }
-                else
-                {
-                    speed = walkSpeed;
-                }
+              
+                    if (Input.GetKey(KeyCode.LeftShift)&&(!Input.GetKey(KeyCode.S)) )
+                    {
+                     
+                            speed = runSpeed;
+                        
+                    }
+                    else
+                    {
+                        speed = walkSpeed;
+                    }
+                
             }
         }
         bool CanGetUp() // no funciona
