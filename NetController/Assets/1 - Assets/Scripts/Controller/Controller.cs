@@ -22,7 +22,7 @@ namespace Alex.Controller
 
         [HideInInspector] public float walkSpeed = 6.75f;
         [HideInInspector] public float runSpeed = 10f;
-         public float crunchSpeed = 4f;
+         public float crunchSpeed = 2f;
         [HideInInspector]
         public float jumpSpeed = 8f;
         [HideInInspector] public float gravity = 20f;
@@ -56,6 +56,13 @@ namespace Alex.Controller
 
      
         private PlayerAnimations playerAnimations;
+        [SerializeField]
+        public WeaponManager weapon_Manager;
+        private Weapon currentWeapon;
+
+        private float fireRate = 15f;
+        private float nextTimeToFire = 0f;
+
         #endregion
         #region Inicializadores
         void Start()
@@ -68,7 +75,11 @@ namespace Alex.Controller
             rayDistance = charController.height * 0.5f + charController.radius + 0.3f;
             default_ControllerHeight = charController.height;
             default_CamPos = firstPerson_View.localPosition;
+
             playerAnimations = GetComponent<PlayerAnimations>();
+
+            weapon_Manager.Weapons[0].SetActive(true);
+            currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
         }
         #endregion
         #region Actualizadores
@@ -85,6 +96,36 @@ namespace Alex.Controller
             playerAnimations.Movement(charController.velocity.magnitude);
             playerAnimations.PlayerForward(inputY);
             playerAnimations.PlayerMovementX(inputX);
+            if (is_Crouching && charController.velocity.magnitude > 0f)
+            {
+
+                playerAnimations.PlayerCrounchWalk(charController.velocity.magnitude);
+
+            }
+
+            //Disparo
+            if (Input.GetMouseButtonDown(0) && Time.time > nextTimeToFire)
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+
+                if (is_Crouching)
+                {
+                    playerAnimations.Shoor(false);
+
+                }
+                else
+                {
+                    playerAnimations.Shoor(true);
+                }
+
+                currentWeapon.Shoot();
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                playerAnimations.Reload();
+            }
+
+
         }
         /// <summary>
         /// Movimiento del jugador
@@ -231,6 +272,7 @@ namespace Alex.Controller
                     }
                 
             }
+            playerAnimations.PlayerCrouch(is_Crouching);
         }
         bool CanGetUp() // no funciona
         {
@@ -264,6 +306,7 @@ namespace Alex.Controller
                     {
                         
                         is_Crouching = false;
+                        playerAnimations.PlayerCrouch(is_Crouching);
                         StopCoroutine(MoveCameraCrounch());
                         StartCoroutine(MoveCameraCrounch());
                     }

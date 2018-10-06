@@ -17,6 +17,10 @@ public class PlayerAnimations : MonoBehaviour {
     private string VELOCITY_Y = "VelocityY";
     private string CROUCH="Crouch";
     private string CROUCH_WALK = "CrouchWalk";
+
+    private string STAND_SHOOT = "StandShoot";
+    private string CROUCH_SHOO = "CrouchShoot";
+    private string RELOAD = "Reload";
 	void Awake () {
         anim = GetComponent<Animator>();
 	}
@@ -40,7 +44,21 @@ public class PlayerAnimations : MonoBehaviour {
     {
         anim.SetFloat(CROUCH_WALK, magnitud);
     }
-	
+    public void Shoor(bool isSTanding)
+    {
+        if (isSTanding)
+        {
+            anim.SetTrigger(STAND_SHOOT);
+        }
+        else
+        {
+            anim.SetTrigger(CROUCH_SHOO);
+        }
+    }
+    public void Reload()
+    {
+        anim.SetTrigger(RELOAD);
+    }
 	void Update () {
 		
 	}
