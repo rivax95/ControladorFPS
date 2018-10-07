@@ -513,11 +513,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1019439606 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1668355614269744, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1117717958}
 --- !u!1 &1054900193
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,45 +640,24 @@ Prefab:
       propertyPath: m_Name
       value: FPS Player
       objectReference: {fileID: 0}
-    - target: {fileID: 114380771535391008, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+    - target: {fileID: 114380305390419706, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
         type: 2}
-      propertyPath: Weapons.Array.data[0]
+      propertyPath: anim
       value: 
-      objectReference: {fileID: 1019439606}
-    - target: {fileID: 114380771535391008, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+      objectReference: {fileID: 1730015629}
+    - target: {fileID: 114685012352392042, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
         type: 2}
-      propertyPath: Weapons.Array.data[1]
+      propertyPath: anim
       value: 
-      objectReference: {fileID: 1466867593}
-    - target: {fileID: 1668355614269744, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114646067626786226, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+      objectReference: {fileID: 1730015629}
+    - target: {fileID: 114521569139913662, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
         type: 2}
-      propertyPath: weapon_Manager
+      propertyPath: anim
       value: 
-      objectReference: {fileID: 1828495635}
-    - target: {fileID: 1014300646178404, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
-      propertyPath: m_Name
-      value: MuzzleFlash
-      objectReference: {fileID: 0}
-    - target: {fileID: 1617696995263982, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
-      propertyPath: m_Name
-      value: MuzzleFlash
-      objectReference: {fileID: 0}
-    - target: {fileID: 4674143307630592, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1730015629}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1466867593 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1638754919338642, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1117717958}
 --- !u!1 &1521164678
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,9 +826,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1828495635 stripped
+--- !u!114 &1730015629 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114380771535391008, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+  m_PrefabParentObject: {fileID: 114368425932427694, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
     type: 2}
   m_PrefabInternal: {fileID: 1117717958}
-  m_Script: {fileID: 11500000, guid: a3558654e182c9f48b1a2afa03728500, type: 3}
+  m_Script: {fileID: 11500000, guid: 595dd977b20f8a74ca289f4a30bbbd6a, type: 3}

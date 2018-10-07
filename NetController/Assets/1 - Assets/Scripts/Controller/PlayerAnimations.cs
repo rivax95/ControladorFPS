@@ -21,6 +21,7 @@ public class PlayerAnimations : MonoBehaviour {
     private string STAND_SHOOT = "StandShoot";
     private string CROUCH_SHOO = "CrouchShoot";
     private string RELOAD = "Reload";
+    public RuntimeAnimatorController animcontroller_pistol,animcontroller_MachineGun;
 	void Awake () {
         anim = GetComponent<Animator>();
 	}
@@ -59,7 +60,29 @@ public class PlayerAnimations : MonoBehaviour {
     {
         anim.SetTrigger(RELOAD);
     }
-	void Update () {
-		
-	}
+    public void changeController(bool isPistol)
+    {
+        if (isPistol)
+        {
+            anim.runtimeAnimatorController = animcontroller_pistol;
+        }
+        else
+        {
+            anim.runtimeAnimatorController = animcontroller_MachineGun;
+        }
+    }
+    public void IsShotting(bool isShooting)
+    {
+        anim.SetBool("StandShooting", isShooting);
+    }
+
+    public float TimeSHott()
+    {
+
+        AnimatorStateInfo currInfo = anim.GetCurrentAnimatorStateInfo(0);
+        //currInfo.length
+        Debug.Log(currInfo.length + "esto q es");
+        return currInfo.length-6f * currInfo.speedMultiplier;
+    }
+
 }

@@ -87,6 +87,62 @@ namespace Alex.Controller
         void Update()
         {
             PlayerMovement();
+            SelectWeapon();
+        }
+        #endregion
+        #region Logica Armas
+        void SelectWeapon()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (!weapon_Manager.Weapons[0].activeInHierarchy)
+                {
+                    for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
+                    {
+                        weapon_Manager.Weapons[i].SetActive(false);
+                    }
+                    currentWeapon = null;
+                    weapon_Manager.Weapons[0].SetActive(true);
+                    currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
+
+                    playerAnimations.changeController(true);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (!weapon_Manager.Weapons[1].activeInHierarchy)
+                {
+                    for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
+                    {
+                        weapon_Manager.Weapons[i].SetActive(false);
+                    }
+                    currentWeapon = null;
+                    weapon_Manager.Weapons[1].SetActive(true);
+                    currentWeapon = weapon_Manager.Weapons[1].GetComponent<Weapon>();
+
+                    playerAnimations.changeController(false);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                if (!weapon_Manager.Weapons[2].activeInHierarchy)
+                {
+                    for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
+                    {
+                        weapon_Manager.Weapons[i].SetActive(false);
+                    }
+                    currentWeapon = null;
+                    weapon_Manager.Weapons[2].SetActive(true);
+                    currentWeapon = weapon_Manager.Weapons[2].GetComponent<Weapon>();
+
+                    playerAnimations.changeController(false);
+                }
+            }
+
+
+
+
+
         }
         #endregion
         #region Movimiento
@@ -104,9 +160,10 @@ namespace Alex.Controller
             }
 
             //Disparo
-            if (Input.GetMouseButtonDown(0) && Time.time > nextTimeToFire)
+            if (Input.GetMouseButton(0)  )
             {
-                nextTimeToFire = Time.time + 1f / fireRate;
+                Debug.Log("Pulsado");
+             
 
                 if (is_Crouching)
                 {
@@ -117,8 +174,19 @@ namespace Alex.Controller
                 {
                     playerAnimations.Shoor(true);
                 }
+                if ((Time.time > nextTimeToFire) &&(Input.GetMouseButton(0)))
 
-                currentWeapon.Shoot();
+                {
+                    fireRate = playerAnimations.TimeSHott();
+                    nextTimeToFire = Time.time + fireRate;
+                    playerAnimations.IsShotting(true);
+
+                    currentWeapon.Shoot();
+                }
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                playerAnimations.IsShotting(false);
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
