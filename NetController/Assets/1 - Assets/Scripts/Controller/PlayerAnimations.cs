@@ -25,6 +25,10 @@ public class PlayerAnimations : MonoBehaviour {
 	void Awake () {
         anim = GetComponent<Animator>();
 	}
+    public void Is_Jumping(bool jump)
+    {
+        anim.SetBool("Is_Jumping", jump);
+    }
     public void Movement(float magnitud)
     {
         anim.SetFloat(MOVE, magnitud);

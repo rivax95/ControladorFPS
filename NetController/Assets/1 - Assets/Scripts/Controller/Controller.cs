@@ -3,7 +3,7 @@
 // Controller.cs (01/10/18)
 //Autor: Alejandro Rivas                 alejandrotejemundos@hotmail.es
 //Desc: Controlador FPS
-//Mod : 0.1
+//Mod : 0.2
 //Rev Ini
 //..............................................................................................\\
 #region Librerias
@@ -40,7 +40,7 @@ namespace Alex.Controller
        
 
         public float speed;
-        private bool is_Moving, is_Grounded, is_Crouching,is_Shiftting;
+        public bool is_Moving, is_Grounded, is_Crouching,is_Shiftting,is_Jumping;
 
         private float inputX, inputY;
         private float inputX_Set, inputY_Set;
@@ -64,6 +64,7 @@ namespace Alex.Controller
         private float nextTimeToFire = 0f;
 
         #endregion
+        //Inicializadores
         #region Inicializadores
         void Start()
         {
@@ -82,6 +83,7 @@ namespace Alex.Controller
             currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
         }
         #endregion
+        //Actualizadores
         #region Actualizadores
 
         void Update()
@@ -90,6 +92,7 @@ namespace Alex.Controller
             SelectWeapon();
         }
         #endregion
+        //Logica Armas
         #region Logica Armas
         void SelectWeapon()
         {
@@ -145,10 +148,12 @@ namespace Alex.Controller
 
         }
         #endregion
+        //Movimiento
         #region Movimiento
         void PasarAnimaciones()
         {
             Debug.Log(charController.velocity.x +"x---z"+ charController.velocity.z);
+            playerAnimations.Is_Jumping(is_Jumping);
             playerAnimations.Movement(charController.velocity.magnitude);
             playerAnimations.PlayerForward(inputY);
             playerAnimations.PlayerMovementX(inputX);
@@ -259,6 +264,7 @@ namespace Alex.Controller
             // NOTEE cosas que hara en el suelo
             if (is_Grounded)
             {
+                is_Jumping = false;
                 PlayerCrouchAndSprint();
                 moveDirection = new Vector3(inputX * inputModifyFactor, -antiBumpFactor, inputY * inputModifyFactor);
                 moveDirection = transform.TransformDirection(moveDirection) * speed;
@@ -381,6 +387,7 @@ namespace Alex.Controller
                 }
                 else
                 {
+                    is_Jumping = true;
                     moveDirection.x *= 0.5f;
                     moveDirection.z *= 0.5f;
                     moveDirection.y = jumpSpeed;
@@ -389,7 +396,8 @@ namespace Alex.Controller
           
         }
         #endregion
-#region corrutinasMovimiento
+        //Corrutines Movement
+        #region corrutinasMovimiento
         IEnumerator MoveCameraCrounch()
         {
             charController.height = is_Crouching ? default_ControllerHeight / 1.5f : default_ControllerHeight;
