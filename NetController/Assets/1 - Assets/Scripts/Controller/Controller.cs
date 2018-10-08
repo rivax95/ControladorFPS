@@ -62,7 +62,10 @@ namespace Alex.Controller
         public WeaponManager weapon_Manager;
         private Weapon currentWeapon;
 
-        private float fireRate = 15f;
+        public WeaponManager HandsWeapon_Manager;
+        private HandWeapon currentHandWeapon;
+
+        private float fireRate = 0.15f;
         private float nextTimeToFire = 0f;
 
         #endregion
@@ -83,6 +86,8 @@ namespace Alex.Controller
 
             weapon_Manager.Weapons[0].SetActive(true);
             currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
+            HandsWeapon_Manager.Weapons[0].SetActive(true);
+            currentHandWeapon = HandsWeapon_Manager.Weapons[0].GetComponent<HandWeapon>();
         }
         #endregion
         //Actualizadores
@@ -186,12 +191,13 @@ namespace Alex.Controller
                 if ((Time.time > nextTimeToFire) &&(Input.GetMouseButton(0)))
 
                 {
-                    fireRate = playerAnimations.TimeSHott();
+                  //  fireRate = playerAnimations.TimeSHott();
                     nextTimeToFire = Time.time + fireRate;
                     playerAnimations.IsShotting(true);
 
                     Debug.Log("Disparo desde el controller");
                     currentWeapon.Shoot();
+                    currentHandWeapon.ShootMet();
                 }
             }
             if (Input.GetMouseButtonUp(0))
@@ -201,6 +207,7 @@ namespace Alex.Controller
             if (Input.GetKeyDown(KeyCode.R))
             {
                 playerAnimations.Reload();
+                currentHandWeapon.reload();
             }
 
 

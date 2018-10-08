@@ -13,6 +13,7 @@ using UnityEngine;
 public class PlayerAnimations : MonoBehaviour {
 
     private Animator anim;
+  //  public Animator animHand;
     private string MOVE = "Move";
     private string VELOCITY_Y = "VelocityY";
     private string CROUCH="Crouch";
@@ -59,10 +60,14 @@ public class PlayerAnimations : MonoBehaviour {
         {
             anim.SetTrigger(CROUCH_SHOO);
         }
+       // animHand.SetTrigger("Shoot");
     }
     public void Reload()
     {
         anim.SetTrigger(RELOAD);
+       // animHand.SetTrigger("Reload");
+    
+       
     }
     public void changeController(bool isPistol)
     {
@@ -96,4 +101,5 @@ public class PlayerAnimations : MonoBehaviour {
         anim.SetFloat("MauseY", Mousey);
     }
 
+    
 }
