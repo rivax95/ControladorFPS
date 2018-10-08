@@ -27,7 +27,7 @@ namespace Alex.MouseLook
         private float currentSensivity_Y = 1.5f;
         private float sensivity_X = 1.5f;
         private float sensivity_Y = 1.5f;
-        private float rotation_X, rotation_Y;
+        public float rotation_X, rotation_Y;
 
         private float minimum_X = -360f;
         private float maximun_X = 360F;
@@ -99,6 +99,7 @@ namespace Alex.MouseLook
 
                 transform.localRotation = originalRotation * xquuat;
             }
+            Debug.Log(rotation_Y+" sENSIBILIDAD EN y");
         }
         #endregion
     }

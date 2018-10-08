@@ -10,6 +10,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Alex.MouseLook;
 #endregion
 namespace Alex.Controller
 {
@@ -27,6 +28,7 @@ namespace Alex.Controller
         public float jumpSpeed = 8f;
         [HideInInspector] public float gravity = 20f;
         public LayerMask groundLayer;
+        public MauseLook thisMouseLook;
         #endregion
         //Variables privadas
         #region VariablesPrivadas 
@@ -152,11 +154,13 @@ namespace Alex.Controller
         #region Movimiento
         void PasarAnimaciones()
         {
-            Debug.Log(charController.velocity.x +"x---z"+ charController.velocity.z);
+            //Debug.Log(charController.velocity.x +"x---z"+ charController.velocity.z);
             playerAnimations.Is_Jumping(is_Jumping);
             playerAnimations.Movement(charController.velocity.magnitude);
             playerAnimations.PlayerForward(inputY);
             playerAnimations.PlayerMovementX(inputX);
+            playerAnimations.rotationY(thisMouseLook.rotation_Y);
+            playerAnimations.IsGrounded(is_Grounded);
             if (is_Crouching && charController.velocity.magnitude > 0f)
             {
 
@@ -186,6 +190,7 @@ namespace Alex.Controller
                     nextTimeToFire = Time.time + fireRate;
                     playerAnimations.IsShotting(true);
 
+                    Debug.Log("Disparo desde el controller");
                     currentWeapon.Shoot();
                 }
             }
@@ -209,7 +214,7 @@ namespace Alex.Controller
      
         void PlayerMovement()
         {
-            Debug.Log(charController.velocity.x);
+          //  Debug.Log(charController.velocity.x);
             
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {

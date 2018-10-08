@@ -79,14 +79,21 @@ public class PlayerAnimations : MonoBehaviour {
     {
         anim.SetBool("StandShooting", isShooting);
     }
-
+    public void IsGrounded(bool isGrounded)
+    {
+        anim.SetBool("Is_Grounded", isGrounded);
+    }
     public float TimeSHott()
     {
 
         AnimatorStateInfo currInfo = anim.GetCurrentAnimatorStateInfo(0);
         //currInfo.length
-        Debug.Log(currInfo.length + "esto q es");
+        //Debug.Log(currInfo.length + "esto q es");
         return currInfo.length-6f * currInfo.speedMultiplier;
+    }
+    public void rotationY(float Mousey)
+    {
+        anim.SetFloat("MauseY", Mousey);
     }
 
 }

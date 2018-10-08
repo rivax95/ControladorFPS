@@ -514,6 +514,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &881883586 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114662469960507276, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1117717958}
+  m_Script: {fileID: 11500000, guid: c91efb501ddb24946845e41c112d4fe1, type: 3}
 --- !u!1 &1054900193
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,6 +706,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114646067626786226, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+        type: 2}
+      propertyPath: thisMouseLook
+      value: 
+      objectReference: {fileID: 881883586}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
   m_IsPrefabParent: 0
