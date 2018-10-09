@@ -17,16 +17,22 @@ namespace Alex.Controller
     [RequireComponent(typeof(CharacterController))]
     public class Controller : MonoBehaviour
     {
-
+        //Variables de Control
+        #region ControlVars
+        [Header("Control Vars Settings")]
+        public float timeGrounded;
+        public float timeAir,timeCrouch,timeShifting,timeMoving,timeRuning;
+        public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping,is_Runing;
+        #endregion
         //Variables publicas
         #region VariablesPublicas
-
-        [HideInInspector] public float walkSpeed = 6.75f;
-        [HideInInspector] public float runSpeed = 10f;
+        [Header("Controller Settings")]
+         public float walkSpeed = 6.75f;
+        public float runSpeed = 10f;
          public float crunchSpeed = 2f;
-        [HideInInspector]
+        
         public float jumpSpeed = 8f;
-        [HideInInspector] public float gravity = 20f;
+        [HideInInspector] public float gravity = 30f;
         public LayerMask groundLayer;
         public MauseLook thisMouseLook;
         #endregion
@@ -42,7 +48,7 @@ namespace Alex.Controller
        
 
         public float speed;
-        public bool is_Moving, is_Grounded, is_Crouching,is_Shiftting,is_Jumping;
+    
 
         private float inputX, inputY;
         private float inputX_Set, inputY_Set;
@@ -92,7 +98,10 @@ namespace Alex.Controller
         #endregion
         //Actualizadores
         #region Actualizadores
-
+        private void FixedUpdate()
+        {
+            controlState();
+        }
         void Update()
         {
             PlayerMovement();
@@ -345,18 +354,20 @@ namespace Alex.Controller
             }
             else
             {
-              
-                    if (Input.GetKey(KeyCode.LeftShift)&&(!Input.GetKey(KeyCode.S)) )
-                    {
-                     
-                            speed = runSpeed;
-                        
-                    }
-                    else
-                    {
-                        speed = walkSpeed;
-                    }
-                
+
+                if (Input.GetKey(KeyCode.LeftShift) && (!Input.GetKey(KeyCode.S)) &&(Input.GetKey(KeyCode.W)))
+                {
+
+                    speed = runSpeed;
+                    is_Runing = true;
+
+                }
+                else
+                {
+                    is_Runing = false;
+                    speed = walkSpeed;
+                }
+
             }
             playerAnimations.PlayerCrouch(is_Crouching);
         }
@@ -433,6 +444,17 @@ namespace Alex.Controller
             }
         }
 #endregion
-
+        //Control de estados
+        public void controlState()
+        {
+            timeCrouch = (is_Crouching) ? timeCrouch+Time.deltaTime : 0;
+            timeAir = (!is_Grounded) ? timeAir+Time.deltaTime : 0;
+            timeGrounded = (is_Grounded) ? timeGrounded+Time.deltaTime : 0;
+            timeMoving = (is_Moving) ? timeMoving+ Time.deltaTime : 0;
+            timeShifting = (is_Shiftting) ? timeShifting+Time.deltaTime : 0;
+            timeRuning = (is_Runing) ? timeRuning + Time.deltaTime : 0;
+            // Animations
+            playerAnimations.TimeAir(timeAir);
+        }
     } //Fin de la clase
 }

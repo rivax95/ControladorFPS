@@ -2,9 +2,9 @@
 //                                        ..........<(+_+)>...........
 // .cs (//)
 //Autor: Alejandro Rivas                 alejandrotejemundos@hotmail.es
-//Desc:
+//Desc: Pasamos animaciones desde aqui para que sea todo mas limpio
 //Mod : 
-//Rev :
+//Rev : 0.1
 //..............................................................................................\\
 using System.Collections;
 using System.Collections.Generic;
@@ -99,6 +99,10 @@ public class PlayerAnimations : MonoBehaviour {
     public void rotationY(float Mousey)
     {
         anim.SetFloat("MauseY", Mousey);
+    }
+    public void TimeAir(float time)
+    {
+        anim.SetFloat("TimeAir", time);
     }
 
     
