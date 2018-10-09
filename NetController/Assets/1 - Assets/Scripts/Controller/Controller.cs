@@ -447,14 +447,17 @@ namespace Alex.Controller
         //Control de estados
         public void controlState()
         {
+            // Animations
+            playerAnimations.TimeAir(timeAir);
+            //Ifs
             timeCrouch = (is_Crouching) ? timeCrouch+Time.deltaTime : 0;
             timeAir = (!is_Grounded) ? timeAir+Time.deltaTime : 0;
             timeGrounded = (is_Grounded) ? timeGrounded+Time.deltaTime : 0;
             timeMoving = (is_Moving) ? timeMoving+ Time.deltaTime : 0;
             timeShifting = (is_Shiftting) ? timeShifting+Time.deltaTime : 0;
             timeRuning = (is_Runing) ? timeRuning + Time.deltaTime : 0;
-            // Animations
-            playerAnimations.TimeAir(timeAir);
+           
+           
         }
     } //Fin de la clase
 }
