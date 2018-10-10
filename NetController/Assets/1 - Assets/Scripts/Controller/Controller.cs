@@ -21,9 +21,11 @@ namespace Alex.Controller
         #region ControlVars
         [Header("Control Vars Settings")]
         public float timeGrounded;
-        public float timeAir,timeCrouch,timeShifting,timeMoving,timeRuning;
-        public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping,is_Runing;
+        public float timeAir,timeCrouch,timeShifting,timeMoving,timeRuning,GroundedDistance,MaxAirDistance;
+        public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping,is_Runing,is_FailJump;
+        public bool can_Moving ;
         #endregion
+        public float MinRayFailAir=4f;
         //Variables publicas
         #region VariablesPublicas
         [Header("Controller Settings")]
@@ -53,6 +55,8 @@ namespace Alex.Controller
         private float inputX, inputY;
         private float inputX_Set, inputY_Set;
         private float inputModifyFactor;
+
+        private float distanciamaxima = 0;
 
         private bool limitDiagonalSpeed = true;
         public bool WalkForward;
@@ -94,6 +98,7 @@ namespace Alex.Controller
             currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
             HandsWeapon_Manager.Weapons[0].SetActive(true);
             currentHandWeapon = HandsWeapon_Manager.Weapons[0].GetComponent<HandWeapon>();
+            can_Moving = true;
         }
         #endregion
         //Actualizadores
@@ -104,7 +109,11 @@ namespace Alex.Controller
         }
         void Update()
         {
-            PlayerMovement();
+            controlStateAir();
+            if (can_Moving)
+            {
+                PlayerMovement();
+            }
             SelectWeapon();
         }
         #endregion
@@ -417,10 +426,22 @@ namespace Alex.Controller
                 }
             }
           
+            //Penalizacion caida
+           
+          
         }
         #endregion
         //Corrutines Movement
         #region corrutinasMovimiento
+            IEnumerator PenaltyMovement(float PenalityTiming)
+        {
+            Debug.Log("penalizado");
+            moveDirection.x = 0f;
+            moveDirection.z = 0f;
+            can_Moving = false;
+            yield return new WaitForSeconds(PenalityTiming);
+            can_Moving = true;
+        }
         IEnumerator MoveCameraCrounch()
         {
             charController.height = is_Crouching ? default_ControllerHeight / 1.5f : default_ControllerHeight;
@@ -444,20 +465,63 @@ namespace Alex.Controller
             }
         }
 #endregion
-        //Control de estados
-        public void controlState()
+        public void controlStateAir()
         {
-            // Animations
-            playerAnimations.TimeAir(timeAir);
-            //Ifs
-            timeCrouch = (is_Crouching) ? timeCrouch+Time.deltaTime : 0;
-            timeAir = (!is_Grounded) ? timeAir+Time.deltaTime : 0;
-            timeGrounded = (is_Grounded) ? timeGrounded+Time.deltaTime : 0;
-            timeMoving = (is_Moving) ? timeMoving+ Time.deltaTime : 0;
-            timeShifting = (is_Shiftting) ? timeShifting+Time.deltaTime : 0;
-            timeRuning = (is_Runing) ? timeRuning + Time.deltaTime : 0;
-           
-           
+            if (is_Grounded && MaxAirDistance > MinRayFailAir)
+            {
+                //efecto caida
+
+                //activo corrutina penalizacion
+                StopCoroutine(PenaltyMovement(0f));
+                StartCoroutine(PenaltyMovement(0.7f));
+            }
+            //Rycasting
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + new Vector3(0, 0.1f, 0), transform.TransformDirection(-Vector3.up), out hit, Mathf.Infinity, groundLayer))
+            {
+                Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), transform.TransformDirection(-Vector3.up) * hit.distance, Color.yellow);
+                //   Debug.Log("Did Hit");
+            }
+            GroundedDistance = Vector3.Distance(transform.position, hit.point);
+            if (!is_Grounded)
+            {
+
+                if (GroundedDistance > 0)
+                {
+                    if (GroundedDistance > distanciamaxima)
+                    {
+                        distanciamaxima = GroundedDistance;
+                    }
+                    //   Debug.Log(distanciamaxima+ " Distanceeee " + GroundedDistance);
+                    MaxAirDistance = distanciamaxima;
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                distanciamaxima = 0;
+                MaxAirDistance = 0;
+            }
+
+
         }
+    
+    //Control de estados
+    public void controlState()
+    {
+        // Animations
+        playerAnimations.GroundDistance(MaxAirDistance);
+        //Ifs
+        timeCrouch = (is_Crouching) ? timeCrouch + Time.deltaTime : 0;
+        timeAir = (!is_Grounded) ? timeAir + Time.deltaTime : 0;
+        timeGrounded = (is_Grounded) ? timeGrounded + Time.deltaTime : 0;
+        timeMoving = (is_Moving) ? timeMoving + Time.deltaTime : 0;
+        timeShifting = (is_Shiftting) ? timeShifting + Time.deltaTime : 0;
+        timeRuning = (is_Runing) ? timeRuning + Time.deltaTime : 0;
+    }
+          
     } //Fin de la clase
 }

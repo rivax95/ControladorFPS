@@ -100,10 +100,23 @@ public class PlayerAnimations : MonoBehaviour {
     {
         anim.SetFloat("MauseY", Mousey);
     }
-    public void TimeAir(float time)
+    public void GroundDistance(float Distance)
     {
-        anim.SetFloat("TimeAir", time);
+        anim.SetFloat("GroundDistance", Distance);
     }
+    //public bool Get_FailJump()
+    //{
+    //    Debug.Log("entro");
+    //    AnimatorStateInfo info=
+    //    anim.GetCurrentAnimatorStateInfo(0);
+    //    Debug.Log(info.IsName("caida") + " Estado");
+    //    if (info.IsName("Callendo"))
+    //    {
 
+    //        return true;
+    //    }
+
+    //    return false;
+    //}
     
 }

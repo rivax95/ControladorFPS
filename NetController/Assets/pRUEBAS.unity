@@ -1753,6 +1753,11 @@ Prefab:
       propertyPath: jumpSpeed
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114646067626786226, guid: 5fe9d74fe711f3147ad7138cbe8de5f4,
+        type: 2}
+      propertyPath: MinRayFailAir
+      value: 3.9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5fe9d74fe711f3147ad7138cbe8de5f4, type: 2}
   m_IsPrefabParent: 0
