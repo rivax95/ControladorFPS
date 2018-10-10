@@ -491,9 +491,10 @@ namespace Alex.Controller
                     if (GroundedDistance > distanciamaxima)
                     {
                         distanciamaxima = GroundedDistance;
+                        //cojer punto mas alto vector Y del personaje
                     }
                     //   Debug.Log(distanciamaxima+ " Distanceeee " + GroundedDistance);
-                    MaxAirDistance = distanciamaxima;
+                    MaxAirDistance = distanciamaxima; //COMENTAR ESTO
                 }
                 else
                 {
@@ -502,6 +503,9 @@ namespace Alex.Controller
             }
             else
             {
+                //cojer vector de posicion Y
+               // entre los dos puntos y calcular la distancia
+               //ejecutar corrutina para q lo ponga a 0 los siguientes valores tras 1 fotograma
                 distanciamaxima = 0;
                 MaxAirDistance = 0;
             }
