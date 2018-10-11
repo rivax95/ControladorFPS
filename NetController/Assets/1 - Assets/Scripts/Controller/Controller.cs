@@ -24,8 +24,11 @@ namespace Alex.Controller
         public float timeAir,timeCrouch,timeShifting,timeMoving,timeRuning,GroundedDistance,MaxAirDistance;
         public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping,is_Runing,is_FailJump;
         public bool can_Moving ;
+       // private bool controlAirState;
+        public float lastUpdateY, fallDistance;
+        Vector3 Max = Vector3.zero, Min = Vector3.zero;
         #endregion
-        public float MinRayFailAir=4f;
+        public float MinFailAir=4f;
         //Variables publicas
         #region VariablesPublicas
         [Header("Controller Settings")]
@@ -109,11 +112,12 @@ namespace Alex.Controller
         }
         void Update()
         {
+           
+
             controlStateAir();
-            if (can_Moving)
-            {
+          
                 PlayerMovement();
-            }
+            
             SelectWeapon();
         }
         #endregion
@@ -233,76 +237,75 @@ namespace Alex.Controller
         /// <summary>
         /// Movimiento del jugador
         /// </summary>
-        /// <remarks>
-        /// Movimiento del Jugador usado con el CharacterController
-        /// </remarks>
-     
+      
         void PlayerMovement()
         {
           //  Debug.Log(charController.velocity.x);
-            
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            if (can_Moving)
             {
-
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
                 {
-                    WalkForward = true;
-                    inputY_Set = 1f;
+
+                    if (Input.GetKey(KeyCode.W))
+                    {
+                        WalkForward = true;
+                        inputY_Set = 1f;
+                    }
+                    else
+                    {
+                        WalkForward = false;
+                        inputY_Set = -1f;
+                    }
+
                 }
                 else
                 {
-                    WalkForward = false;
-                    inputY_Set = -1f;
+                    inputY_Set = 0f;
                 }
 
-            }
-            else
-            {
-                inputY_Set = 0f;
-            }
-
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-            {
-
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
                 {
-                    inputX_Set = -1f;
+
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        inputX_Set = -1f;
+                    }
+                    else
+                    {
+                        inputX_Set = 1f;
+                    }
+
                 }
                 else
                 {
-                    inputX_Set = 1f;
+                    inputX_Set = 0f;
                 }
 
-            }
-            else
-            {
-                inputX_Set = 0f;
-            }
-            
-            inputY = Mathf.Lerp(inputY , inputY_Set, Time.deltaTime * 19f);
-            inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
-            if (inputY < -0.5f) inputY = -0.5f; //Note TEST
-            if (inputX<  -0.5f) inputX = -0.5f;//Note TEST
-            if (inputX > 0.5f) inputX = 0.5f;//Note TEST
-            //Notee hace lo mismo con la x
-            //NOTEE Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
-            inputModifyFactor = Mathf.Lerp(inputModifyFactor, (inputY_Set != 0 && inputX_Set != 0 && limitDiagonalSpeed) ? 0.75f : 1, Time.deltaTime * 19f);
+                inputY = Mathf.Lerp(inputY, inputY_Set, Time.deltaTime * 19f);
+                inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
+                if (inputY < -0.5f) inputY = -0.5f; //Note TEST
+                if (inputX < -0.5f) inputX = -0.5f;//Note TEST
+                if (inputX > 0.5f) inputX = 0.5f;//Note TEST
+                //Notee hace lo mismo con la x
+                //NOTEE Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
+                inputModifyFactor = Mathf.Lerp(inputModifyFactor, (inputY_Set != 0 && inputX_Set != 0 && limitDiagonalSpeed) ? 0.75f : 1, Time.deltaTime * 19f);
 
-            firstPerson_View_Rotation = Vector3.Lerp(firstPerson_View_Rotation, Vector3.zero, Time.deltaTime * 5f);
+                firstPerson_View_Rotation = Vector3.Lerp(firstPerson_View_Rotation, Vector3.zero, Time.deltaTime * 5f);
 
-            firstPerson_View.localEulerAngles = firstPerson_View_Rotation;
-            // NOTEE cosas que hara en el suelo
-            if (is_Grounded)
-            {
-                is_Jumping = false;
-                PlayerCrouchAndSprint();
-                moveDirection = new Vector3(inputX * inputModifyFactor, -antiBumpFactor, inputY * inputModifyFactor);
-                moveDirection = transform.TransformDirection(moveDirection) * speed;
+                firstPerson_View.localEulerAngles = firstPerson_View_Rotation;
+                // NOTEE cosas que hara en el suelo
+                if (is_Grounded)
+                {
+                    is_Jumping = false;
+                    PlayerCrouchAndSprint();
+                    moveDirection = new Vector3(inputX * inputModifyFactor, -antiBumpFactor, inputY * inputModifyFactor);
+                    moveDirection = transform.TransformDirection(moveDirection) * speed;
 
-                // LLAMADAS DE SALTO
-                playerJump();
-                Shifteo();
-             
+                    // LLAMADAS DE SALTO
+                    playerJump();
+                    Shifteo();
+
+                }
             }
             moveDirection.y -= gravity * Time.deltaTime;
 
@@ -403,7 +406,7 @@ namespace Alex.Controller
         //{
         //    Gizmos.DrawSphere(transform.position, charController.radius + 0.05f);
         //}
-        void playerJump() //Salto ME CAGO EN LA PUTA OSTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        void playerJump() 
         {
             if(Input.GetKeyDown(KeyCode.Space)){
                 if (is_Crouching)
@@ -433,13 +436,27 @@ namespace Alex.Controller
         #endregion
         //Corrutines Movement
         #region corrutinasMovimiento
+    
             IEnumerator PenaltyMovement(float PenalityTiming)
         {
+         
+            //Min = Vector3.zero;
+            //Max = Vector3.zero;
+          //  controlAirState = true;
+       //     GroundedDistance = 0;
             Debug.Log("penalizado");
             moveDirection.x = 0f;
             moveDirection.z = 0f;
             can_Moving = false;
             yield return new WaitForSeconds(PenalityTiming);
+            if (CanGetUp()&&is_Crouching)
+            {
+
+                is_Crouching = false;
+                playerAnimations.PlayerCrouch(is_Crouching);
+                StopCoroutine(MoveCameraCrounch());
+                StartCoroutine(MoveCameraCrounch());
+            }
             can_Moving = true;
         }
         IEnumerator MoveCameraCrounch()
@@ -467,57 +484,69 @@ namespace Alex.Controller
 #endregion
         public void controlStateAir()
         {
-            if (is_Grounded && MaxAirDistance > MinRayFailAir)
-            {
-                //efecto caida
 
-                //activo corrutina penalizacion
-                StopCoroutine(PenaltyMovement(0f));
-                StartCoroutine(PenaltyMovement(0.7f));
-            }
-            //Rycasting
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position + new Vector3(0, 0.1f, 0), transform.TransformDirection(-Vector3.up), out hit, Mathf.Infinity, groundLayer))
-            {
-                Debug.DrawRay(transform.position + new Vector3(0, 0.1f, 0), transform.TransformDirection(-Vector3.up) * hit.distance, Color.yellow);
-                //   Debug.Log("Did Hit");
-            }
-            GroundedDistance = Vector3.Distance(transform.position, hit.point);
+
             if (!is_Grounded)
             {
+                Max = transform.position;
 
-                if (GroundedDistance > 0)
+                if ((distanciamaxima <= Max.y) &&(moveDirection.y >=0))
                 {
-                    if (GroundedDistance > distanciamaxima)
+                    //cojer punto mas alto vector Y del personaje
+                    distanciamaxima = Max.y;
+                 //   RayAir = moveDirection;
+                }
+                if (moveDirection.y < 0) // El personaje baja
+                {
+                    //Suma
+                    if (lastUpdateY > transform.position.y)
                     {
-                        distanciamaxima = GroundedDistance;
-                        //cojer punto mas alto vector Y del personaje
+                        fallDistance += lastUpdateY - transform.position.y;
                     }
-                    //   Debug.Log(distanciamaxima+ " Distanceeee " + GroundedDistance);
-                    MaxAirDistance = distanciamaxima; //COMENTAR ESTO
-                }
-                else
-                {
+                    lastUpdateY = transform.position.y;
+
+
+
 
                 }
+             
+
+                Min = transform.position;
+               
             }
             else
             {
-                //cojer vector de posicion Y
-               // entre los dos puntos y calcular la distancia
-               //ejecutar corrutina para q lo ponga a 0 los siguientes valores tras 1 fotograma
-                distanciamaxima = 0;
-                MaxAirDistance = 0;
+                if (fallDistance > MinFailAir)
+                {
+                    StopCoroutine(PenaltyMovement(0f));
+                    StartCoroutine(PenaltyMovement(0.7f));
+                    //StopCoroutine(MoveCameraCrounch());
+                    //StartCoroutine(MoveCameraCrounch());
+                    //is_Crouching = false;
+                }
+                fallDistance = 0;
+                lastUpdateY = 0;
             }
 
 
+            //if (is_Grounded && MinFailAir < GroundedDistance )
+            //{
+
+                
+            //    GroundedDistance = 0;
+              
+            
+                
+               
+            //}
         }
     
     //Control de estados
     public void controlState()
     {
         // Animations
-        playerAnimations.GroundDistance(MaxAirDistance);
+          playerAnimations.GroundDistance(fallDistance);
+          //playerAnimations.Caida(controlAirState);
         //Ifs
         timeCrouch = (is_Crouching) ? timeCrouch + Time.deltaTime : 0;
         timeAir = (!is_Grounded) ? timeAir + Time.deltaTime : 0;

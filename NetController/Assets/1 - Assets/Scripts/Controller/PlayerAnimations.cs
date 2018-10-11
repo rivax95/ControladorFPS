@@ -104,6 +104,10 @@ public class PlayerAnimations : MonoBehaviour {
     {
         anim.SetFloat("GroundDistance", Distance);
     }
+    //public void Caida(bool caida)
+    //{
+    //    anim.SetBool("Caida", caida);
+    //}
     //public bool Get_FailJump()
     //{
     //    Debug.Log("entro");
