@@ -32,8 +32,8 @@ namespace Alex.MouseLook
         private float minimum_X = -360f;
         private float maximun_X = 360F;
 
-        private float minimum_Y = -60f;
-        private float maximun_Y = 60F;
+        private float minimum_Y = -80f;
+        private float maximun_Y = 80F;
 
         private Quaternion originalRotation;
 
