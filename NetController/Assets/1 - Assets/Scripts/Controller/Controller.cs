@@ -65,7 +65,7 @@ namespace Alex.Controller
         public bool WalkForward;
         private float antiBumpFactor = 0.75f;
         private CharacterController charController;
-        private Vector3 moveDirection = Vector3.zero;
+        public Vector3 moveDirection = Vector3.zero;
         private Vector3 default_CamPos;
         private Vector3 firstPerson_View_Rotation = Vector3.zero;
 
@@ -97,10 +97,10 @@ namespace Alex.Controller
 
             playerAnimations = GetComponent<PlayerAnimations>();
 
-            weapon_Manager.Weapons[0].SetActive(true);
-            currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
-            HandsWeapon_Manager.Weapons[0].SetActive(true);
-            currentHandWeapon = HandsWeapon_Manager.Weapons[0].GetComponent<HandWeapon>();
+            //weapon_Manager.Weapons[0].SetActive(true);
+            //currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
+            //HandsWeapon_Manager.Weapons[0].SetActive(true);
+            //currentHandWeapon = HandsWeapon_Manager.Weapons[0].GetComponent<HandWeapon>();
             can_Moving = true;
         }
         #endregion
@@ -125,51 +125,51 @@ namespace Alex.Controller
         #region Logica Armas
         void SelectWeapon()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (!weapon_Manager.Weapons[0].activeInHierarchy)
-                {
-                    for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
-                    {
-                        weapon_Manager.Weapons[i].SetActive(false);
-                    }
-                    currentWeapon = null;
-                    weapon_Manager.Weapons[0].SetActive(true);
-                    currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //{
+            //    if (!weapon_Manager.Weapons[0].activeInHierarchy)
+            //    {
+            //        for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
+            //        {
+            //            weapon_Manager.Weapons[i].SetActive(false);
+            //        }
+            //        currentWeapon = null;
+            //        weapon_Manager.Weapons[0].SetActive(true);
+            //        currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
 
-                    playerAnimations.changeController(true);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (!weapon_Manager.Weapons[1].activeInHierarchy)
-                {
-                    for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
-                    {
-                        weapon_Manager.Weapons[i].SetActive(false);
-                    }
-                    currentWeapon = null;
-                    weapon_Manager.Weapons[1].SetActive(true);
-                    currentWeapon = weapon_Manager.Weapons[1].GetComponent<Weapon>();
+            //        playerAnimations.changeController(true);
+            //    }
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    if (!weapon_Manager.Weapons[1].activeInHierarchy)
+            //    {
+            //        for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
+            //        {
+            //            weapon_Manager.Weapons[i].SetActive(false);
+            //        }
+            //        currentWeapon = null;
+            //        weapon_Manager.Weapons[1].SetActive(true);
+            //        currentWeapon = weapon_Manager.Weapons[1].GetComponent<Weapon>();
 
-                    playerAnimations.changeController(false);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                if (!weapon_Manager.Weapons[2].activeInHierarchy)
-                {
-                    for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
-                    {
-                        weapon_Manager.Weapons[i].SetActive(false);
-                    }
-                    currentWeapon = null;
-                    weapon_Manager.Weapons[2].SetActive(true);
-                    currentWeapon = weapon_Manager.Weapons[2].GetComponent<Weapon>();
+            //        playerAnimations.changeController(false);
+            //    }
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha3))
+            //{
+            //    if (!weapon_Manager.Weapons[2].activeInHierarchy)
+            //    {
+            //        for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
+            //        {
+            //            weapon_Manager.Weapons[i].SetActive(false);
+            //        }
+            //        currentWeapon = null;
+            //        weapon_Manager.Weapons[2].SetActive(true);
+            //        currentWeapon = weapon_Manager.Weapons[2].GetComponent<Weapon>();
 
-                    playerAnimations.changeController(false);
-                }
-            }
+            //        playerAnimations.changeController(false);
+            //   }
+            //}
 
 
 
@@ -218,8 +218,8 @@ namespace Alex.Controller
                     playerAnimations.IsShotting(true);
 
                     Debug.Log("Disparo desde el controller");
-                    currentWeapon.Shoot();
-                    currentHandWeapon.ShootMet();
+                 //   currentWeapon.Shoot();
+                  //  currentHandWeapon.ShootMet();
                 }
             }
             if (Input.GetMouseButtonUp(0))
@@ -280,9 +280,9 @@ namespace Alex.Controller
                 {
                     inputX_Set = 0f;
                 }
-
-                inputY = Mathf.Lerp(inputY, inputY_Set, Time.deltaTime * 19f);
-                inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
+                float velocity = charController.velocity.magnitude;
+                inputY = Mathf.SmoothDamp(inputY, inputY_Set, ref velocity,0.05f);
+                inputX = Mathf.SmoothDamp(inputX, inputX_Set, ref velocity, 0.05f);
                 if (inputY < -0.5f) inputY = -0.5f; //Note TEST
                 if (inputX < -0.5f) inputX = -0.5f;//Note TEST
                 if (inputX > 0.5f) inputX = 0.5f;//Note TEST

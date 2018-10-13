@@ -31,7 +31,7 @@ public class HandWeapon : MonoBehaviour {
     }
     public void reload()
     {
-        StartCoroutine(PlayReloadSound());
+//        StartCoroutine(PlayReloadSound());
     }
     IEnumerator PlayReloadSound()
     {
