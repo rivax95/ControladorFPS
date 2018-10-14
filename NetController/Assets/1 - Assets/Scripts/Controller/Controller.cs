@@ -74,9 +74,7 @@ namespace Alex.Controller
         [SerializeField]
         public WeaponManager weapon_Manager;
         private Weapon currentWeapon;
-
-        public WeaponManager HandsWeapon_Manager;
-        private HandWeapon currentHandWeapon;
+        private Weapon LastWeapon;
 
         private float fireRate = 0.15f;
         private float nextTimeToFire = 0f;
@@ -86,6 +84,7 @@ namespace Alex.Controller
         #region Inicializadores
         void Start()
         {
+            LastWeapon = currentWeapon;
             firstPerson_View = transform.Find("FPS View").transform;
             charController = GetComponent<CharacterController>();
             speed = walkSpeed;
@@ -97,10 +96,7 @@ namespace Alex.Controller
 
             playerAnimations = GetComponent<PlayerAnimations>();
 
-            //weapon_Manager.Weapons[0].SetActive(true);
-            //currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
-            //HandsWeapon_Manager.Weapons[0].SetActive(true);
-            //currentHandWeapon = HandsWeapon_Manager.Weapons[0].GetComponent<HandWeapon>();
+            currentWeapon = weapon_Manager.currentWeapon;
             can_Moving = true;
         }
         #endregion
@@ -125,51 +121,12 @@ namespace Alex.Controller
         #region Logica Armas
         void SelectWeapon()
         {
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //{
-            //    if (!weapon_Manager.Weapons[0].activeInHierarchy)
-            //    {
-            //        for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
-            //        {
-            //            weapon_Manager.Weapons[i].SetActive(false);
-            //        }
-            //        currentWeapon = null;
-            //        weapon_Manager.Weapons[0].SetActive(true);
-            //        currentWeapon = weapon_Manager.Weapons[0].GetComponent<Weapon>();
-
-            //        playerAnimations.changeController(true);
-            //    }
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha2))
-            //{
-            //    if (!weapon_Manager.Weapons[1].activeInHierarchy)
-            //    {
-            //        for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
-            //        {
-            //            weapon_Manager.Weapons[i].SetActive(false);
-            //        }
-            //        currentWeapon = null;
-            //        weapon_Manager.Weapons[1].SetActive(true);
-            //        currentWeapon = weapon_Manager.Weapons[1].GetComponent<Weapon>();
-
-            //        playerAnimations.changeController(false);
-            //    }
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha3))
-            //{
-            //    if (!weapon_Manager.Weapons[2].activeInHierarchy)
-            //    {
-            //        for (int i = 0; i < weapon_Manager.Weapons.Length; i++)
-            //        {
-            //            weapon_Manager.Weapons[i].SetActive(false);
-            //        }
-            //        currentWeapon = null;
-            //        weapon_Manager.Weapons[2].SetActive(true);
-            //        currentWeapon = weapon_Manager.Weapons[2].GetComponent<Weapon>();
-
-            //        playerAnimations.changeController(false);
-            //   }
-            //}
+            currentWeapon = weapon_Manager.currentWeapon;
+            if (LastWeapon != currentWeapon)
+            {
+                LastWeapon = currentWeapon;
+                // se ha cambiado de arma
+            }
 
 
 
@@ -196,7 +153,7 @@ namespace Alex.Controller
             }
 
             //Disparo
-            if (Input.GetMouseButton(0)  )
+            if (weapon_Manager.WeaponbaseCurrent.Shoot )
             {
                 Debug.Log("Pulsado");
              
@@ -226,10 +183,10 @@ namespace Alex.Controller
             {
                 playerAnimations.IsShotting(false);
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (weapon_Manager.WeaponbaseCurrent.isReloading)
             {
                 playerAnimations.Reload();
-                currentHandWeapon.reload();
+                //currentHandWeapon.reload();
             }
 
 

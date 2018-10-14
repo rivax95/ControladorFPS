@@ -20,8 +20,11 @@ public enum Weapon{
 public class WeaponManager : MonoBehaviour {
     public static WeaponManager instance;
     public Weapon currentWeapon = Weapon.Police9mm;
-    private int CurrenWeaponIndex;
+    private int CurrenWeaponIndex=0;
     private Weapon[] weapons = { Weapon.Police9mm, Weapon.UMP45 };
+    [HideInInspector]
+    public WeaponBase WeaponbaseCurrent;
+
     void Awake()
     {
         if (instance == null)
@@ -36,6 +39,7 @@ public class WeaponManager : MonoBehaviour {
     void Start()
     {
         transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
+        WeaponbaseCurrent= transform.Find(weapons[CurrenWeaponIndex].ToString()).GetComponent<WeaponBase>();
     }
     void Update()
     {
@@ -48,6 +52,7 @@ public class WeaponManager : MonoBehaviour {
             transform.GetChild(i).gameObject.SetActive(false);
         }
         transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
+        WeaponbaseCurrent = transform.Find(weapons[CurrenWeaponIndex].ToString()).GetComponent<WeaponBase>();
     }
     void CheckWeaponSwitch()
     {

@@ -9,6 +9,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Alex.Controller;
 public enum ModoDeFuego
 {
     SemiAuto,
@@ -19,6 +20,7 @@ public class WeaponBase : MonoBehaviour {
     protected AudioSource audiosource;
    protected  bool fireLock;
     protected  bool canShoot;
+    public bool Shoot = false;
     public bool isReloading = false;
     [Header("Sonidos")]
     public AudioClip Fire;
@@ -91,6 +93,7 @@ public class WeaponBase : MonoBehaviour {
     }
     void FIRE()
     {
+        Shoot = true;
         audiosource.PlayOneShot(Fire);
         fireLock = true;
         muzzleFlash.Stop();
@@ -111,6 +114,7 @@ public class WeaponBase : MonoBehaviour {
     IEnumerator CoResetFireLook()
     {
         yield return new WaitForSeconds(fireRate);
+        Shoot = false;
         fireLock = false;
     }
     void ChekReload()
