@@ -32,22 +32,28 @@ public class WeaponBase : MonoBehaviour {
     [Header("Referencias")]
     protected Animator animator;
     public ParticleSystem muzzleFlash;
+    public ParticleSystem bloodFX;
     [Header("Weapon Attributes")]
+    public LayerMask ShootRayLayer;
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
     public float damage = 20f;
     public float fireRate = 1f;
-    public int bulletsInClip ;
+    public int bulletsInClip;
+ //   public float BulletAmountPenetration;
+    public float penetration;
+    public float minpenetration;
     public int clipSize  =12;
     public int bulletsLeft ;
     public int maxAmmo=100 ;
-
+    public Animator Playeranim;
+    public GameObject ShootPoint;
     void Start()
     {
         animator = GetComponent<Animator>();
         audiosource = GetComponent<AudioSource>();
         bulletsInClip = clipSize;
         bulletsLeft = maxAmmo;
-        Invoke("EnableWeapon", 1f);
+        Invoke("EnableWeapon", 1f); // pasar a corrutinas
     }
     void EnableWeapon()
     {
@@ -88,14 +94,93 @@ public class WeaponBase : MonoBehaviour {
     public virtual void PlayFireAnimation()
     {
         animator.CrossFadeInFixedTime("Fire", 0.1f);
+       
     
 
     }
+    public void CreateBlood(Vector3 pos, Quaternion rot)
+    {
+        ParticleSystem blood = Instantiate(bloodFX, pos, rot);
+        blood.Play();
+        Destroy(blood, 1f);
+    }
+    void DetectedHit()
+    {
+        RaycastHit[] hit;
+        float penetrationHit=penetration;
+        float damegehit=damage;
+       // float amount = BulletAmountPenetration;
+         //Ray Ray = ShootPoint.ScreenPointToRay(Input.mousePosition);
+       //  Debug.DrawRay(ShootPoint.ViewportPointToRay(Vector3.forward),);
+        hit = Physics.RaycastAll(ShootPoint.transform.position, ShootPoint.transform.forward, ShootRayLayer);
+       // Debug.Log(hit.transform.gameObject.name);
+        for (int i = 0; i < hit.Length; i++)
+        {
+
+            Penetration takevalue = hit[i].transform.GetComponent<Penetration>();
+            float body = takevalue.value;
+            Health health = hit[i].transform.GetComponent<Health>();
+
+            if (minpenetration <= body)
+            {
+                Debug.Log("Enrta");
+                if (takevalue != null)
+                {
+                    Debug.Log("Enrta1");
+                    if (penetrationHit - body > 0)
+                    {
+                        Debug.Log("Enrta2");
+                        penetrationHit -= body;
+                      //sigue haciendo daño
+                        float porcentaje = penetrationHit * 100 / penetration ;//cuanto por ciento
+                        float damageHit = porcentaje / damage;
+                        float finalDamage = damageHit - damage;
+                        finalDamage = Mathf.Abs(finalDamage);
+                        Debug.Log("damge" + finalDamage);
+
+                    }
+                    else {
+                        //final damage
+                        penetrationHit -= minpenetration;
+                        
+                        break; }
+
+
+                }
+            }
+
+            else
+            {
+                penetrationHit -= minpenetration;
+                //calcula daño
+                // haz daño una vez
+                if (hit[i].transform.CompareTag("Enemy"))
+                {
+                    //Debug.Log("hace");
+
+                    if (health == null)
+                    {
+                        //ealth.take
+                        Debug.Log("No ahi vida");
+                    }
+                    else
+                    {
+                        Debug.Log("hit");
+                        health.TakeDamage(damage);
+                        CreateBlood(hit[i].point, Quaternion.identity);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
     void FIRE()
     {
         Shoot = true;
         audiosource.PlayOneShot(Fire);
         fireLock = true;
+        DetectedHit();
         muzzleFlash.Stop();
         muzzleFlash.Play();
         PlayFireAnimation();
@@ -132,6 +217,7 @@ public class WeaponBase : MonoBehaviour {
         if (isReloading) return;
         isReloading = true;
         animator.CrossFadeInFixedTime("Reload", 0.1f);
+        Playeranim.CrossFadeInFixedTime("Reload", 0.1f);
     }
     void ReloadAmmo()
     {

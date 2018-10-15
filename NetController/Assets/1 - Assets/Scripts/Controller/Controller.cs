@@ -22,8 +22,11 @@ namespace Alex.Controller
         [Header("Control Vars Settings")]
         public float timeGrounded;
         public float timeAir,timeCrouch,timeShifting,timeMoving,timeRuning,GroundedDistance,MaxAirDistance;
-        public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping,is_Runing,is_FailJump;
+        public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping, is_Runing, is_FailJump, is_reloading;
         public bool can_Moving ;
+        public bool die;
+        public float velocity;
+        private Health health;
        // private bool controlAirState;
         public float lastUpdateY, fallDistance;
         Vector3 Max = Vector3.zero, Min = Vector3.zero;
@@ -84,6 +87,7 @@ namespace Alex.Controller
         #region Inicializadores
         void Start()
         {
+            health = GetComponent<Health>();
             LastWeapon = currentWeapon;
             firstPerson_View = transform.Find("FPS View").transform;
             charController = GetComponent<CharacterController>();
@@ -108,13 +112,15 @@ namespace Alex.Controller
         }
         void Update()
         {
-           
+            CheckHealth();
+            if (!die)
+            {
+                controlStateAir();
 
-            controlStateAir();
-          
                 PlayerMovement();
-            
-            SelectWeapon();
+
+                SelectWeapon();
+            }
         }
         #endregion
         //Logica Armas
@@ -183,11 +189,7 @@ namespace Alex.Controller
             {
                 playerAnimations.IsShotting(false);
             }
-            if (weapon_Manager.WeaponbaseCurrent.isReloading)
-            {
-                playerAnimations.Reload();
-                //currentHandWeapon.reload();
-            }
+           
 
 
         }
@@ -237,7 +239,8 @@ namespace Alex.Controller
                 {
                     inputX_Set = 0f;
                 }
-                float velocity = charController.velocity.magnitude;
+                 velocity = charController.velocity.magnitude;
+               // Debug.Log(velocity);
                 inputY = Mathf.SmoothDamp(inputY, inputY_Set, ref velocity,0.05f);
                 inputX = Mathf.SmoothDamp(inputX, inputX_Set, ref velocity, 0.05f);
                 if (inputY < -0.5f) inputY = -0.5f; //Note TEST
@@ -512,6 +515,12 @@ namespace Alex.Controller
         timeShifting = (is_Shiftting) ? timeShifting + Time.deltaTime : 0;
         timeRuning = (is_Runing) ? timeRuning + Time.deltaTime : 0;
     }
-          
+    public void CheckHealth()
+    {
+        if (health.value <= 0)
+        {
+            //Activar Roggdoll
+        }
+    }
     } //Fin de la clase
 }

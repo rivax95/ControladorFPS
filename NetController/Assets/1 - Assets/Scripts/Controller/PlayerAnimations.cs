@@ -9,7 +9,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Alex.Controller;
 public class PlayerAnimations : MonoBehaviour {
 
     private Animator anim;
@@ -23,8 +23,12 @@ public class PlayerAnimations : MonoBehaviour {
     private string CROUCH_SHOO = "CrouchShoot";
     private string RELOAD = "Reload";
     public RuntimeAnimatorController animcontroller_pistol,animcontroller_MachineGun;
+    public Controller charcontroller;
+   // public Controller charcontroller;
 	void Awake () {
+        charcontroller = GetComponent<Controller>();
         anim = GetComponent<Animator>();
+
 	}
     public void Is_Jumping(bool jump)
     {
@@ -64,9 +68,10 @@ public class PlayerAnimations : MonoBehaviour {
     }
     public void Reload()
     {
-        anim.SetTrigger(RELOAD);
+        anim.Play("Reload", 2);
+      //  anim.SetTrigger(RELOAD);
        // animHand.SetTrigger("Reload");
-    
+        charcontroller.is_reloading = false;
        
     }
     public void changeController(bool isPistol)
@@ -122,5 +127,5 @@ public class PlayerAnimations : MonoBehaviour {
 
     //    return false;
     //}
-    
+
 }
