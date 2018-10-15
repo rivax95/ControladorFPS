@@ -99,7 +99,7 @@ namespace Alex.MouseLook
 
                 transform.localRotation = originalRotation * xquuat;
             }
-            //Debug.Log(rotation_Y+" sENSIBILIDAD EN y");
+         
         }
         #endregion
     }

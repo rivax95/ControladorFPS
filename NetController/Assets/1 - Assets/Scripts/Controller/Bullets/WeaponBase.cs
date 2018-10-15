@@ -180,7 +180,7 @@ public class WeaponBase : MonoBehaviour {
         Shoot = true;
         audiosource.PlayOneShot(Fire);
         fireLock = true;
-        DetectedHit();
+        //DetectedHit();
         muzzleFlash.Stop();
         muzzleFlash.Play();
         PlayFireAnimation();

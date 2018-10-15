@@ -199,7 +199,8 @@ namespace Alex.Controller
       
         void PlayerMovement()
         {
-          //  Debug.Log(charController.velocity.x);
+            velocity = charController.velocity.magnitude;
+            //  Debug.Log(charController.velocity.x);
             if (can_Moving)
             {
                 if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
@@ -215,11 +216,13 @@ namespace Alex.Controller
                         WalkForward = false;
                         inputY_Set = -1f;
                     }
-
+                    inputY = Mathf.SmoothDamp(inputY, inputY_Set, ref velocity, 0.05f);
+                    inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
                 }
                 else
                 {
                     inputY_Set = 0f;
+                    inputY = Mathf.SmoothDamp(inputY, inputY_Set, ref velocity, 0.05f);
                 }
 
                 if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
@@ -233,27 +236,32 @@ namespace Alex.Controller
                     {
                         inputX_Set = 1f;
                     }
+                    inputX = Mathf.SmoothDamp(inputX, inputX_Set, ref velocity, 0.05f);
 
                 }
                 else
                 {
                     inputX_Set = 0f;
+                    inputY = Mathf.SmoothDamp(inputY, inputY_Set, ref velocity, 0.05f);
+                    inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
                 }
-                 velocity = charController.velocity.magnitude;
-               // Debug.Log(velocity);
-                inputY = Mathf.SmoothDamp(inputY, inputY_Set, ref velocity,0.05f);
-                inputX = Mathf.SmoothDamp(inputX, inputX_Set, ref velocity, 0.05f);
+                
+               
+                //inputY = Mathf.Lerp(inputY, inputY_Set, Time.deltaTime * 19f);
+                //inputX = Mathf.Lerp(inputX, inputX_Set, Time.deltaTime * 19f);
+               
+               
                 if (inputY < -0.5f) inputY = -0.5f; //Note TEST
                 if (inputX < -0.5f) inputX = -0.5f;//Note TEST
                 if (inputX > 0.5f) inputX = 0.5f;//Note TEST
                 //Notee hace lo mismo con la x
-                //NOTEE Condicional directo, si ocurre esto, lo pone a 0,75, si no a 1.
+             
                 inputModifyFactor = Mathf.Lerp(inputModifyFactor, (inputY_Set != 0 && inputX_Set != 0 && limitDiagonalSpeed) ? 0.75f : 1, Time.deltaTime * 19f);
-
+             
                 firstPerson_View_Rotation = Vector3.Lerp(firstPerson_View_Rotation, Vector3.zero, Time.deltaTime * 5f);
-
+                
                 firstPerson_View.localEulerAngles = firstPerson_View_Rotation;
-                // NOTEE cosas que hara en el suelo
+               
                 if (is_Grounded)
                 {
                     is_Jumping = false;
@@ -261,14 +269,14 @@ namespace Alex.Controller
                     moveDirection = new Vector3(inputX * inputModifyFactor, -antiBumpFactor, inputY * inputModifyFactor);
                     moveDirection = transform.TransformDirection(moveDirection) * speed;
 
-                    // LLAMADAS DE SALTO
+                   
                     playerJump();
                     Shifteo();
 
                 }
             }
             moveDirection.y -= gravity * Time.deltaTime;
-
+           
             is_Grounded = (charController.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
 
             is_Moving = charController.velocity.magnitude > 0.15f;
