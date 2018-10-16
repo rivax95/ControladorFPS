@@ -643,6 +643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 40
+  TipoMaterial: 0
 --- !u!1 &449180502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1902,6 +1903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 25
+  TipoMaterial: 0
 --- !u!1 &963332888
 GameObject:
   m_ObjectHideFlags: 0
@@ -3072,6 +3074,7 @@ GameObject:
   - component: {fileID: 1521164681}
   - component: {fileID: 1521164680}
   - component: {fileID: 1521164679}
+  - component: {fileID: 1521164683}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -3145,6 +3148,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1521164683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1521164678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8829559d1cd0b714ba50a35b1b4f5552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calcula: 0
+  currentPositioon: {x: 0, y: 0, z: 0}
+  newPositionn: {x: 0, y: 0, z: 0}
+  newVelocity: {x: 0, y: 0, z: 0}
+  currentVelocityy: {x: 0, y: 1200, z: 0}
 --- !u!1 &1562562864
 GameObject:
   m_ObjectHideFlags: 0
@@ -4518,8 +4537,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2104151671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 453, y: 211.5, z: 0}
-  m_LocalScale: {x: 0.705, y: 0.705, z: 0.705}
+  m_LocalPosition: {x: 452.5, y: 212, z: 0}
+  m_LocalScale: {x: 0.70666665, y: 0.70666665, z: 0.70666665}
   m_Children:
   - {fileID: 1850846794}
   m_Father: {fileID: 0}

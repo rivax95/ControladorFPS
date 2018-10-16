@@ -13,4 +13,15 @@ using UnityEngine;
 public class Penetration : MonoBehaviour {
 
 	public float value;
+   public enum Material { Cemento, Metal, Madera, Cristal,Suelo }
+    public Material TipoMaterial;
+
+
+    //public void GetPropiedades(Material material){
+    //    //switch(material){
+    //    //    case Material.Cemento:
+    //    //        break;
+    //    //}
+
+    //}
 }
