@@ -106,73 +106,82 @@ public class WeaponBase : MonoBehaviour {
     }
     void DetectedHit()
     {
-        RaycastHit[] hit;
-        float penetrationHit=penetration;
-        float damegehit=damage;
-       // float amount = BulletAmountPenetration;
-         //Ray Ray = ShootPoint.ScreenPointToRay(Input.mousePosition);
-       //  Debug.DrawRay(ShootPoint.ViewportPointToRay(Vector3.forward),);
-        hit = Physics.RaycastAll(ShootPoint.transform.position, ShootPoint.transform.forward, ShootRayLayer);
-       // Debug.Log(hit.transform.gameObject.name);
-        for (int i = 0; i < hit.Length; i++)
-        {
+        #region primer intento
+        // RaycastHit[] hit;
+        // float penetrationHit=penetration;
+        // float damegehit=damage;
+        //// float amount = BulletAmountPenetration;
+        //  //Ray Ray = ShootPoint.ScreenPointToRay(Input.mousePosition);
+        ////  Debug.DrawRay(ShootPoint.ViewportPointToRay(Vector3.forward),);
+        // hit = Physics.RaycastAll(ShootPoint.transform.position, ShootPoint.transform.forward, ShootRayLayer);
+        // // Debug.Log(hit.transform.gameObject.name);
 
-            Penetration takevalue = hit[i].transform.GetComponent<Penetration>();
-            float body = takevalue.value;
-            Health health = hit[i].transform.GetComponent<Health>();
+        // for (int i = 0; i < hit.Length; i++)
+        // {
 
-            if (minpenetration <= body)
-            {
-                Debug.Log("Enrta");
-                if (takevalue != null)
-                {
-                    Debug.Log("Enrta1");
-                    if (penetrationHit - body > 0)
-                    {
-                        Debug.Log("Enrta2");
-                        penetrationHit -= body;
-                      //sigue haciendo daño
-                        float porcentaje = penetrationHit * 100 / penetration ;//cuanto por ciento
-                        float damageHit = porcentaje / damage;
-                        float finalDamage = damageHit - damage;
-                        finalDamage = Mathf.Abs(finalDamage);
-                        Debug.Log("damge" + finalDamage);
+        //     Penetration takevalue = hit[i].transform.GetComponent<Penetration>();
+        //     float body = takevalue.value;
+        //     Health health = hit[i].transform.GetComponent<Health>();
 
-                    }
-                    else {
-                        //final damage
-                        penetrationHit -= minpenetration;
-                        
-                        break; }
+        //     if (minpenetration <= body)
+        //     {
+        //         Debug.Log("Enrta");
+        //         if (takevalue != null)
+        //         {
+        //             Debug.Log("Enrta1");
+        //             if (penetrationHit - body > 0)
+        //             {
+        //                 Debug.Log("Enrta2");
+        //                 penetrationHit -= body;
+        //               //sigue haciendo daño
+        //                 float porcentaje = penetrationHit * 100 / penetration ;//cuanto por ciento
+        //                 float damageHit = porcentaje / damage;
+        //                 float finalDamage = damageHit - damage;
+        //                 finalDamage = Mathf.Abs(finalDamage);
+        //                 Debug.Log("damge" + finalDamage);
+
+        //             }
+        //             else {
+        //                 //final damage
+        //                 penetrationHit -= minpenetration;
+
+        //                 break; }
 
 
-                }
-            }
+        //         }
+        //     }
 
-            else
-            {
-                penetrationHit -= minpenetration;
-                //calcula daño
-                // haz daño una vez
-                if (hit[i].transform.CompareTag("Enemy"))
-                {
-                    //Debug.Log("hace");
+        //     else
+        //     {
+        //         penetrationHit -= minpenetration;
+        //         //calcula daño
+        //         // haz daño una vez
+        //         if (hit[i].transform.CompareTag("Enemy"))
+        //         {
+        //             //Debug.Log("hace");
 
-                    if (health == null)
-                    {
-                        //ealth.take
-                        Debug.Log("No ahi vida");
-                    }
-                    else
-                    {
-                        Debug.Log("hit");
-                        health.TakeDamage(damage);
-                        CreateBlood(hit[i].point, Quaternion.identity);
-                    }
-                }
-                break;
-            }
-        }
+        //             if (health == null)
+        //             {
+        //                 //ealth.take
+        //                 Debug.Log("No ahi vida");
+        //             }
+        //             else
+        //             {
+        //                 Debug.Log("hit");
+        //                 health.TakeDamage(damage);
+        //                 CreateBlood(hit[i].point, Quaternion.identity);
+        //             }
+        //         }
+        //         break;
+        //     }
+        // }
+        #endregion
+        #region segundoIntento
+        BulletPenetration balaPen = new BulletPenetration();
+        balaPen.maxObjetos = 4;
+        balaPen.Raycasting(1200, ShootPoint.transform.position,ShootPoint.transform.forward, ShootRayLayer);
+        Debug.Log("Disparo el hits");
+#endregion
     }
 
     void FIRE()
@@ -185,7 +194,7 @@ public class WeaponBase : MonoBehaviour {
         muzzleFlash.Play();
         PlayFireAnimation();
         bulletsInClip--;
-      
+        DetectedHit();
         StartCoroutine(CoResetFireLook());
     }
     void DRYFIRE()
