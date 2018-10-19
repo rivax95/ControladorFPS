@@ -15,13 +15,14 @@ public enum Weapon{
 
     Police9mm,
 
-    UMP45
+    UMP45,
+    Grenade
 }
 public class WeaponManager : MonoBehaviour {
     public static WeaponManager instance;
     public Weapon currentWeapon = Weapon.Police9mm;
     private int CurrenWeaponIndex=0;
-    private Weapon[] weapons = { Weapon.Police9mm, Weapon.UMP45 };
+    private Weapon[] weapons = { Weapon.Police9mm, Weapon.UMP45,Weapon.Grenade };
     [HideInInspector]
     public WeaponBase WeaponbaseCurrent;
 
