@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Alex.Controller;
+using Alex.MouseLook;
 public enum ModoDeFuego
 {
     SemiAuto,
@@ -30,7 +31,9 @@ public class WeaponBase : MonoBehaviour {
     public AudioClip MagInSound;
     public AudioClip boltSound;
     [Header("Referencias")]
+    public MauseLook Scriptx;
     protected Animator animator;
+   // public GameObject sparkPrefab;
     public ParticleSystem muzzleFlash;
     public ParticleSystem bloodFX;
     [Header("Weapon Attributes")]
@@ -40,6 +43,8 @@ public class WeaponBase : MonoBehaviour {
     public float damage = 20f;
     public float fireRate = 1f;
     public int bulletsInClip;
+    public float spreat = 0.1f;
+    public float recoil = 1f;
  //   public float BulletAmountPenetration;
     public float penetration;
     public float minpenetration;
@@ -181,10 +186,15 @@ public class WeaponBase : MonoBehaviour {
         #region segundoIntento
         BulletPenetration balaPen = new BulletPenetration();
         balaPen.maxObjetos = 4;
-        balaPen.Raycasting(1200, ShootPoint.transform.position,ShootPoint.transform.forward, ShootRayLayer);
+        Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
+        balaPen.Raycasting(1200, ShootPoint.transform.position,direct, ShootRayLayer);
         Debug.Log("Disparo el hits");
 #endregion
     }
+   Vector3 CrearSpread(float spread, Transform shootpoint)
+   {
+       return Vector3.Lerp(shootpoint.TransformDirection(Vector3.forward * 100), Random.onUnitSphere, spread);
+   }
 
     void FIRE()
     {
@@ -192,11 +202,17 @@ public class WeaponBase : MonoBehaviour {
         audiosource.PlayOneShot(Fire);
         fireLock = true;
         //DetectedHit();
+
         muzzleFlash.Stop();
         muzzleFlash.Play();
+
         PlayFireAnimation();
         bulletsInClip--;
+
         DetectedHit();
+
+        Recoil();
+
         StartCoroutine(CoResetFireLook());
     }
     void DRYFIRE()
@@ -237,6 +253,10 @@ public class WeaponBase : MonoBehaviour {
         bulletsLeft -= bulletsToSub;
         bulletsInClip += bulletsToLoad;
     }
+  protected virtual void Recoil()
+  {
+      Scriptx.Recoil(recoil);
+  }
     public virtual void OnDraw()
     {
         audiosource.PlayOneShot(Draw);

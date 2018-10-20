@@ -35,6 +35,8 @@ namespace Alex.MouseLook
         private float minimum_Y = -80f;
         private float maximun_Y = 80F;
 
+        private float recoil=0f;
+
         private Quaternion originalRotation;
 
         private float mouseSensivity = 1.7f;
@@ -88,8 +90,16 @@ namespace Alex.MouseLook
                 rotation_X += Input.GetAxis("Mouse X") * sensivity_X;
                 rotation_X = ClampAngle(rotation_X, minimum_X, maximun_X);
                 Quaternion xquuat = Quaternion.AngleAxis(rotation_X, Vector3.up);
-
-                transform.localRotation = originalRotation * xquuat;
+                Quaternion reco = Quaternion.Euler(-0f+ -recoil, 0f, 0f);
+                transform.localRotation = (originalRotation * xquuat)*reco;
+                if (recoil > 0f)
+                {
+                    recoil -= Time.deltaTime*2;
+                }
+                else
+                {
+                    recoil = 0f;
+                }
             }
             if (axes == RotationAxes.MoueseY)
             {
@@ -102,5 +112,9 @@ namespace Alex.MouseLook
          
         }
         #endregion
+        public void Recoil(float amount)
+        {
+            recoil += amount;
+        }
     }
 }
