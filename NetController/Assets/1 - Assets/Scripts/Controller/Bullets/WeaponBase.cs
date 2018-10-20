@@ -1,10 +1,10 @@
 ﻿//                                          ▂ ▃ ▅ ▆ █ ZEN █ ▆ ▅ ▃ ▂ 
 //                                        ..........<(+_+)>...........
-// .cs (//)
+// .cs (15/10/18)
 //Autor: Alejandro Rivas                 alejandrotejemundos@hotmail.es
 //Desc:
 //Mod : 
-//Rev :
+//Rev : 0.2
 //..............................................................................................\\
 using System.Collections;
 using System.Collections.Generic;
@@ -34,6 +34,7 @@ public class WeaponBase : MonoBehaviour {
     public ParticleSystem muzzleFlash;
     public ParticleSystem bloodFX;
     [Header("Weapon Attributes")]
+    public bool isPistol;
     public LayerMask ShootRayLayer;
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
     public float damage = 20f;
@@ -43,6 +44,7 @@ public class WeaponBase : MonoBehaviour {
     public float penetration;
     public float minpenetration;
     public int clipSize  =12;
+  //  [HideInInspector]
     public int bulletsLeft ;
     public int maxAmmo=100 ;
     public Animator Playeranim;
@@ -221,34 +223,34 @@ public class WeaponBase : MonoBehaviour {
 
 
     }
-    void Reload()
+   protected virtual void Reload()
     {
         if (isReloading) return;
         isReloading = true;
         animator.CrossFadeInFixedTime("Reload", 0.1f);
         Playeranim.CrossFadeInFixedTime("Reload", 0.1f);
     }
-    void ReloadAmmo()
+  protected virtual  void ReloadAmmo()
     {
         int bulletsToLoad = clipSize - bulletsInClip;
         int bulletsToSub = (bulletsLeft >= bulletsToLoad) ? bulletsToLoad : bulletsLeft;
         bulletsLeft -= bulletsToSub;
         bulletsInClip += bulletsToLoad;
     }
-    public void OnDraw()
+    public virtual void OnDraw()
     {
         audiosource.PlayOneShot(Draw);
     }
-    public void OnMagOut()
+    public virtual void OnMagOut()
     {
         audiosource.PlayOneShot(MagOutSound);
     }
-    public void OnMagIn()
+    public virtual void OnMagIn()
     {
         ReloadAmmo();
         audiosource.PlayOneShot(MagInSound);
     }
-    public void OnBoltForwarded()
+    public virtual void OnBoltForwarded()
     {
        
         audiosource.PlayOneShot(boltSound);
@@ -256,9 +258,21 @@ public class WeaponBase : MonoBehaviour {
         Debug.Log("Recargando");
         Invoke("resetReloading", 1f);// invoke por probar
     }
-    void resetReloading()
+protected    void resetReloading()
     {
         isReloading = false;
 
+    }
+    string getWeaponName()
+    {
+        string name = "";
+        if (this is SlideStopWeapon)
+        {
+            name = "UMP45";
+        }
+        else if (this is Escopeta){
+            name = "DefenderShoutgun";
+        }
+        return name;
     }
 }

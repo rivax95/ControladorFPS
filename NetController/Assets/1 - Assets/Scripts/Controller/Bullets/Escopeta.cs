@@ -1,25 +1,25 @@
 ﻿//                                          ▂ ▃ ▅ ▆ █ ZEN █ ▆ ▅ ▃ ▂ 
 //                                        ..........<(+_+)>...........
-// ShotgunWeapon.cs (20/10/18)
+// .cs (//)
 //Autor: Alejandro Rivas                 alejandrotejemundos@hotmail.es
-//Desc: Comportamiento escopeta.
+//Desc:
 //Mod : 
-//Rev :0.1
+//Rev :
 //..............................................................................................\\
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class shotgunWeapon : WeaponBase
+public class Escopeta : ArmaDeTubo
 {
+    public void OnPump()
+    {
+        audiosource.PlayOneShot(boltSound);
+    }
+    public override void OnBoltForwarded()
+    {
+        //silencio
+        Invoke("resetReloading", 0.5f);
+    }
 
-	
-	void Start () {
-		
-	}
-	
-	
-	void Update () {
-		
-	}
 }
