@@ -3,7 +3,7 @@
 // Controller.cs (01/10/18)
 //Autor: Alejandro Rivas                 alejandrotejemundos@hotmail.es
 //Desc: Controlador FPS
-//Mod : 0.2
+//Mod : 0.4
 //Rev Ini
 //..............................................................................................\\
 #region Librerias

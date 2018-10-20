@@ -104,7 +104,7 @@ public class WeaponBase : MonoBehaviour {
         blood.Play();
         Destroy(blood, 1f);
     }
-    void DetectedHit()
+   public virtual void DetectedHit()
     {
         #region primer intento
         // RaycastHit[] hit;
