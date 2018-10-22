@@ -93,16 +93,16 @@ namespace Alex.MouseLook
                
                 Quaternion xquuat = Quaternion.AngleAxis(rotation_X, Vector3.up);
                 transform.localRotation = (originalRotation * xquuat);
-                Quaternion reco = Quaternion.Euler(-recoil, 0f, 0f);
-                transform.localRotation *= reco;
-                if (recoil > 0f)
-                {
-                    recoil -= Time.deltaTime*4;
-                }
-                else
-                {
-                    recoil = 0f;
-                }
+                //Quaternion reco = Quaternion.Euler(-recoil, 0f, 0f);
+                //transform.localRotation *= reco;
+                //if (recoil > 0f)
+                //{
+                //    recoil -= Time.deltaTime*4;
+                //}
+                //else
+                //{
+                //    recoil = 0f;
+                //}
             }
             if (axes == RotationAxes.MoueseY)
             {

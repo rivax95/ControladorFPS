@@ -31,7 +31,7 @@ public class WeaponBase : MonoBehaviour {
     public AudioClip MagInSound;
     public AudioClip boltSound;
     [Header("Referencias")]
-    public MauseLook Scriptx;
+    public RecoilAffect Scriptx;
     protected Animator animator;
    // public GameObject sparkPrefab;
     public ParticleSystem muzzleFlash;

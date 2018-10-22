@@ -89,7 +89,7 @@ namespace Alex.Controller
         {
             health = GetComponent<Health>();
             LastWeapon = currentWeapon;
-            firstPerson_View = transform.Find("FPS View").transform;
+            firstPerson_View = transform.Find("Recoil").transform.Find("FPS View").transform;
             charController = GetComponent<CharacterController>();
             speed = walkSpeed;
             is_Moving = false;
