@@ -89,12 +89,15 @@ namespace Alex.MouseLook
             {
                 rotation_X += Input.GetAxis("Mouse X") * sensivity_X;
                 rotation_X = ClampAngle(rotation_X, minimum_X, maximun_X);
+         
+               
                 Quaternion xquuat = Quaternion.AngleAxis(rotation_X, Vector3.up);
-                Quaternion reco = Quaternion.Euler(-0f+ -recoil, 0f, 0f);
-                transform.localRotation = (originalRotation * xquuat)*reco;
+                transform.localRotation = (originalRotation * xquuat);
+                Quaternion reco = Quaternion.Euler(-recoil, 0f, 0f);
+                transform.localRotation *= reco;
                 if (recoil > 0f)
                 {
-                    recoil -= Time.deltaTime*2;
+                    recoil -= Time.deltaTime*4;
                 }
                 else
                 {

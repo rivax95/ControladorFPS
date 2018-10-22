@@ -254,7 +254,7 @@ namespace Alex.Controller
                 if (inputY < -0.5f) inputY = -0.5f; //Note TEST
                 if (inputX < -0.5f) inputX = -0.5f;//Note TEST
                 if (inputX > 0.5f) inputX = 0.5f;//Note TEST
-                //Notee hace lo mismo con la x
+            
              
                 inputModifyFactor = Mathf.Lerp(inputModifyFactor, (inputY_Set != 0 && inputX_Set != 0 && limitDiagonalSpeed) ? 0.75f : 1, Time.deltaTime * 19f);
              
@@ -266,6 +266,7 @@ namespace Alex.Controller
                 {
                     is_Jumping = false;
                     PlayerCrouchAndSprint();
+                  
                     moveDirection = new Vector3(inputX * inputModifyFactor, -antiBumpFactor, inputY * inputModifyFactor);
                     moveDirection = transform.TransformDirection(moveDirection) * speed;
 
@@ -275,8 +276,9 @@ namespace Alex.Controller
 
                 }
             }
-            moveDirection.y -= gravity * Time.deltaTime;
-           
+        
+            moveDirection.y -= gravity * Time.fixedDeltaTime;
+       
             is_Grounded = (charController.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
 
             is_Moving = charController.velocity.magnitude > 0.15f;
