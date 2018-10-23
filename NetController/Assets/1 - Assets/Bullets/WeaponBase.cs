@@ -37,6 +37,7 @@ public class WeaponBase : MonoBehaviour {
     public ParticleSystem muzzleFlash;
     public ParticleSystem bloodFX;
     [Header("Weapon Attributes")]
+    public string Name;
     public bool isPistol;
     public LayerMask ShootRayLayer;
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;

@@ -23,10 +23,11 @@ public enum Grenades { }
 public class WeaponManager : MonoBehaviour {
     public static WeaponManager instance;
     public Weapon currentWeapon = Weapon.Police9mm;
-    private int CurrenWeaponIndex=0;
+    public int CurrenWeaponIndex=0;
     private Weapon[] weapons = { Weapon.Police9mm, Weapon.UMP45,Weapon.DefenderShotgun };
   //  [HideInInspector]
     public WeaponBase WeaponbaseCurrent;
+    public List <WeaponBase> WeaponsInInventory;
     [HideInInspector]
     public GrenadeBase GrenadesAvailables;
     public bool isWeapon = true;
@@ -45,6 +46,17 @@ public class WeaponManager : MonoBehaviour {
     {
         transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
         WeaponbaseCurrent= transform.Find(weapons[CurrenWeaponIndex].ToString()).GetComponent<WeaponBase>();
+        ActualizarInventario();
+
+        foreach (WeaponBase item in WeaponsInInventory)
+        {
+            if (item.isPistol) { }
+            else
+            {
+                item.gameObject.SetActive(false);
+            }
+        }
+
     }
     void Update()
     {
@@ -77,12 +89,14 @@ public class WeaponManager : MonoBehaviour {
     }
     void SwitchToCurrentWeapon() // Conectar con el controller
     {
+        
         for (int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).gameObject.SetActive(false);
+            WeaponsInInventory[i].gameObject.SetActive(false);
         }
-        transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
-        WeaponbaseCurrent = transform.Find(weapons[CurrenWeaponIndex].ToString()).GetComponent<WeaponBase>();
+        //transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
+        WeaponsInInventory[CurrenWeaponIndex].gameObject.SetActive(true);
+        WeaponbaseCurrent = WeaponsInInventory[CurrenWeaponIndex].gameObject.GetComponent<WeaponBase>();
     }
     void CheckWeaponSwitch()
     {
@@ -102,7 +116,7 @@ public class WeaponManager : MonoBehaviour {
         
         if (CurrenWeaponIndex == 0)
         {
-            CurrenWeaponIndex = weapons.Length - 1;
+            CurrenWeaponIndex = WeaponsInInventory.Count - 1;
         }
         else
         {
@@ -112,7 +126,7 @@ public class WeaponManager : MonoBehaviour {
     }
     void selecNextWeapon()
     {
-        if (CurrenWeaponIndex >= weapons.Length-1)
+        if (CurrenWeaponIndex >= WeaponsInInventory.Count - 1)
         {
             CurrenWeaponIndex = 0;
         }
@@ -131,6 +145,7 @@ public class WeaponManager : MonoBehaviour {
         GameObject drop = transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject;
         dropIstantiate(drop);
         Destroy(drop);
+        ActualizarInventario();
         selecNextWeapon();
     }
 
@@ -171,5 +186,27 @@ public class WeaponManager : MonoBehaviour {
         copia.clipSize = orig.clipSize;
         copia.bulletsLeft = orig.bulletsLeft;
         copia.maxAmmo = orig.maxAmmo;
+    }
+    void ActualizarInventario()
+    {
+        foreach (WeaponBase item in WeaponsInInventory)
+        {
+            try
+            {
+                item.gameObject.SetActive(true);
+            }
+            catch { }
+        }
+        WeaponsInInventory.Clear();
+        foreach (Transform t in this.transform)
+        {
+            WeaponsInInventory.Add(t.gameObject.GetComponent<WeaponBase>());
+        }
+
+      
+        foreach (WeaponBase item in WeaponsInInventory)
+        {
+            item.gameObject.SetActive(false);
+        }
     }
 }

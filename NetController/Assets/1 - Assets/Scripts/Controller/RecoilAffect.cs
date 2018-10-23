@@ -68,13 +68,14 @@ public class RecoilAffect : MonoBehaviour {
         void HandleRotation()
         {
 
-                
-                Quaternion reco = Quaternion.Euler(-recoil, 0f, 0f);
+
+            Quaternion reco = Quaternion.Euler(-recoil, 0f, 0f);
                 reco.x = ClampAngle(reco.x, minimum_X, maximun_X);
+                Vector3 direct = Vector3.up * 1;
+                Quaternion xquuat =  Quaternion.AngleAxis(this.transform.rotation.x, direct);
+                transform.localRotation = (father.originalRotation * xquuat);
 
-                Quaternion xquuat = Quaternion.AngleAxis(father.rotation_X, Vector3.up);
-
-                transform.rotation = (reco*xquuat);
+                transform.localRotation *= reco;
                 if (recoil > 0f)
                 {
                     recoil -= Time.deltaTime*4;

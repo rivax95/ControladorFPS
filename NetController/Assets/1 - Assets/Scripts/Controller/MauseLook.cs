@@ -37,8 +37,8 @@ namespace Alex.MouseLook
 
         private float recoil=0f;
 
-        private Quaternion originalRotation;
-
+        public Quaternion originalRotation;
+        public Quaternion xquuat;
         private float mouseSensivity = 1.7f;
         #endregion
         #region inicializadores
@@ -91,7 +91,7 @@ namespace Alex.MouseLook
                 rotation_X = ClampAngle(rotation_X, minimum_X, maximun_X);
          
                
-                Quaternion xquuat = Quaternion.AngleAxis(rotation_X, Vector3.up);
+                 xquuat = Quaternion.AngleAxis(rotation_X, Vector3.up);
                 transform.localRotation = (originalRotation * xquuat);
                 //Quaternion reco = Quaternion.Euler(-recoil, 0f, 0f);
                 //transform.localRotation *= reco;
