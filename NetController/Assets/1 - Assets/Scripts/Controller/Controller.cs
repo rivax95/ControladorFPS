@@ -76,8 +76,8 @@ namespace Alex.Controller
         private PlayerAnimations playerAnimations;
         [SerializeField]
         public WeaponManager weapon_Manager;
-        private Weapon currentWeapon;
-        private Weapon LastWeapon;
+        private WeaponBase currentWeapon;
+        private WeaponBase LastWeapon;
 
         private float fireRate = 0.15f;
         private float nextTimeToFire = 0f;
@@ -100,7 +100,7 @@ namespace Alex.Controller
 
             playerAnimations = GetComponent<PlayerAnimations>();
 
-            currentWeapon = weapon_Manager.currentWeapon;
+            currentWeapon = weapon_Manager.WeaponbaseCurrent;
             can_Moving = true;
         }
         #endregion
@@ -119,23 +119,39 @@ namespace Alex.Controller
 
                 PlayerMovement();
 
-                SelectWeapon();
+             
             }
+            SelectWeapon();
         }
         #endregion
         //Logica Armas
         #region Logica Armas
         void SelectWeapon()
         {
-            currentWeapon = weapon_Manager.currentWeapon;
+            currentWeapon = weapon_Manager.WeaponbaseCurrent;
             if (LastWeapon != currentWeapon)
             {
                 LastWeapon = currentWeapon;
                 // se ha cambiado de arma
+                //asiganmos posiciones ik en el swich
+                switch (currentWeapon.Name)
+                {
+
+                    case "UMP45":
+
+                        break;
+
+                    case "9mm":
+
+                        break;
+
+                    case "Escopeta Defensiva":
+
+                        break;
+
+                }
+                playerAnimations.changeController(currentWeapon.type);
             }
-
-
-
 
 
         }

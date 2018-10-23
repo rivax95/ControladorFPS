@@ -74,16 +74,28 @@ public class PlayerAnimations : MonoBehaviour {
         charcontroller.is_reloading = false;
        
     }
-    public void changeController(bool isPistol)
+    public void changeController(int type) //TIPADO DE ARMAS
     {
-        if (isPistol)
-        {
-            anim.runtimeAnimatorController = animcontroller_pistol;
+        switch(type){
+
+            case 0: //pistola
+                anim.runtimeAnimatorController = animcontroller_pistol;     //TODOO Cambiar cuando tenga las animaciones
+                break;
+            case 1: //Rifle Semi
+                anim.runtimeAnimatorController = animcontroller_MachineGun; //TODOO Cambiar cuando tenga las animaciones
+                break;
+            case 2: // rifle
+                anim.runtimeAnimatorController = animcontroller_MachineGun; //TODOO Cambiar cuando tenga las animaciones
+                break;
+            case 3: //escopeta
+                anim.runtimeAnimatorController = animcontroller_MachineGun; //TODOO Cambiar cuando tenga las animaciones
+                break;
+            case 4: //Snìper
+                anim.runtimeAnimatorController = animcontroller_MachineGun; //TODOO Cambiar cuando tenga las animaciones
+                break;
+
         }
-        else
-        {
-            anim.runtimeAnimatorController = animcontroller_MachineGun;
-        }
+     
     }
     public void IsShotting(bool isShooting)
     {

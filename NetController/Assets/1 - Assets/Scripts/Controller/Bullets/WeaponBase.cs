@@ -16,6 +16,14 @@ public enum ModoDeFuego
     SemiAuto,
     FullAuto
 }
+public enum Tipo
+{
+    Pistola,
+    RifleSemiAutomatico,
+    Rifle,
+    Escopeta,
+    RifleFrancoTirador
+}
 public class WeaponBase : MonoBehaviour {
 
     protected AudioSource audiosource;
@@ -41,6 +49,7 @@ public class WeaponBase : MonoBehaviour {
     public bool isPistol;
     public LayerMask ShootRayLayer;
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
+    public Tipo TipoDeArma = Tipo.Pistola;
     public float damage = 20f;
     public float fireRate = 1f;
     public int bulletsInClip;
@@ -55,6 +64,12 @@ public class WeaponBase : MonoBehaviour {
     public int maxAmmo=100 ;
     public Animator Playeranim;
     public GameObject ShootPoint;
+    [HideInInspector]
+    public int type;
+    void Awake()
+    {
+        ConfigurationType();
+    }
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -62,6 +77,7 @@ public class WeaponBase : MonoBehaviour {
         bulletsInClip = clipSize;
         bulletsLeft = maxAmmo;
         Invoke("EnableWeapon", 1f); // pasar a corrutinas
+
     }
     void EnableWeapon()
     {
@@ -284,16 +300,43 @@ protected    void resetReloading()
         isReloading = false;
 
     }
-    string getWeaponName()
+    //string getWeaponName()
+    //{
+    //    string name = "";
+    //    if (this is SlideStopWeapon)
+    //    {
+    //        name = "UMP45";
+    //    }
+    //    else if (this is Escopeta){
+    //        name = "DefenderShoutgun";
+    //    }
+    //    return name;
+    //}
+    public void ConfigurationType()
     {
-        string name = "";
-        if (this is SlideStopWeapon)
-        {
-            name = "UMP45";
+
+        switch(TipoDeArma){
+
+            case Tipo.Pistola:
+                type = 0;
+              
+                break;
+            case Tipo.RifleSemiAutomatico:
+                type = 1;
+              
+                break;
+
+            case Tipo.Rifle:
+                type = 2;
+               
+                break;
+            case Tipo.Escopeta:
+                type=3;
+                break;
+            case Tipo.RifleFrancoTirador:
+                type = 4;
+                break;
+
         }
-        else if (this is Escopeta){
-            name = "DefenderShoutgun";
-        }
-        return name;
     }
 }

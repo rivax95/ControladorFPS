@@ -21,6 +21,7 @@ public enum Weapon{
 }
 public enum Grenades {Bang,Flash,Toxic }
 public class WeaponManager : MonoBehaviour {
+   
     public static WeaponManager instance;
     public Weapon currentWeapon = Weapon.Police9mm;
     public int CurrenWeaponIndex=0;
@@ -91,7 +92,7 @@ public class WeaponManager : MonoBehaviour {
             isWeapon = (isWeapon) ? false : true;
         }
     }
-    void SwitchToCurrentWeapon() // Conectar con el controller
+    void SwitchToCurrentWeapon() // Conectar con el controller //Conectado por otro lado
     {
         
         for (int i = 0; i < WeaponsInInventory.Count ; i++)
@@ -101,6 +102,7 @@ public class WeaponManager : MonoBehaviour {
         //transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
         WeaponsInInventory[CurrenWeaponIndex].gameObject.SetActive(true);
         WeaponbaseCurrent = WeaponsInInventory[CurrenWeaponIndex].gameObject.GetComponent<WeaponBase>();
+        
     }
     void CheckWeaponSwitch()
     {
