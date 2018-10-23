@@ -19,7 +19,7 @@ public enum Weapon{
     DefenderShotgun
 
 }
-public enum Grenades { }
+public enum Grenades {Bang,Flash,Toxic }
 public class WeaponManager : MonoBehaviour {
     public static WeaponManager instance;
     public Weapon currentWeapon = Weapon.Police9mm;
@@ -77,7 +77,11 @@ public class WeaponManager : MonoBehaviour {
     void CheckDrop()
     {
         if (WeaponbaseCurrent.isPistol) return;
+        int i=WeaponsInInventory.IndexOf(WeaponbaseCurrent);
+        WeaponsInInventory.RemoveAt(i);
         dropWeapon(WeaponbaseCurrent);
+     //   ActualizarInventario();
+        selecNextWeapon();
     }
     void SwitchModeWeapon()
     {
@@ -90,7 +94,7 @@ public class WeaponManager : MonoBehaviour {
     void SwitchToCurrentWeapon() // Conectar con el controller
     {
         
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < WeaponsInInventory.Count ; i++)
         {
             WeaponsInInventory[i].gameObject.SetActive(false);
         }
@@ -142,11 +146,11 @@ public class WeaponManager : MonoBehaviour {
     }
     void dropWeapon(WeaponBase current)
     {
-        GameObject drop = transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject;
-        dropIstantiate(drop);
-        Destroy(drop);
-        ActualizarInventario();
-        selecNextWeapon();
+        
+        
+        dropIstantiate(current.gameObject);
+        Destroy(current.gameObject);
+       
     }
 
     void dropIstantiate(GameObject current)
