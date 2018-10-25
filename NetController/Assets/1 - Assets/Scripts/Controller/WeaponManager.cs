@@ -193,7 +193,7 @@ public class WeaponManager : MonoBehaviour {
         copia.bulletsLeft = orig.bulletsLeft;
         copia.maxAmmo = orig.maxAmmo;
     }
-    void ActualizarInventario()
+   public void ActualizarInventario()
     {
         foreach (WeaponBase item in WeaponsInInventory)
         {
