@@ -51,7 +51,7 @@ public class WeaponManager : MonoBehaviour {
 
         foreach (WeaponBase item in WeaponsInInventory)
         {
-            if (item.isPistol) { }
+            if (item.isPistol) { item.gameObject.SetActive(true); }
             else
             {
                 item.gameObject.SetActive(false);
@@ -193,7 +193,7 @@ public class WeaponManager : MonoBehaviour {
         copia.bulletsLeft = orig.bulletsLeft;
         copia.maxAmmo = orig.maxAmmo;
     }
-    void ActualizarInventario()
+   public void ActualizarInventario()
     {
         foreach (WeaponBase item in WeaponsInInventory)
         {
