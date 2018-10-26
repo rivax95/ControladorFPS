@@ -155,7 +155,7 @@ public class WeaponManager : MonoBehaviour {
        
     }
 
-    void dropIstantiate(GameObject current)
+  public  void dropIstantiate(GameObject current)
     {
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.position = this.transform.position;

@@ -30,7 +30,7 @@ public class BulletPenetration : MonoBehaviour
 
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = impacto.point;
-            cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            cube.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
             cube.GetComponent<Collider>().enabled = false;
 
             cube.name = "CubeFront";
@@ -63,7 +63,7 @@ public class BulletPenetration : MonoBehaviour
             {
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.position = hit.point;
-                cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                cube.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
                 cube.GetComponent<Collider>().enabled = false;
                 cube.name = "CubeBack";
 

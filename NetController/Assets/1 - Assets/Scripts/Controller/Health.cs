@@ -40,6 +40,7 @@ public class Health : MonoBehaviour {
     }
     public void Died()
     {
+        WeaponManager.instance.dropIstantiate(WeaponManager.instance.WeaponbaseCurrent.gameObject);
         foreach (Transform item in WeaponFather.transform)
         {
             Destroy(item.gameObject);

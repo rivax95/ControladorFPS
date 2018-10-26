@@ -31,6 +31,7 @@ namespace Alex.Controller
         public float lastUpdateY, fallDistance;
         Vector3 Max = Vector3.zero, Min = Vector3.zero;
         #endregion
+        
         public float MinFailAir=4f;
         //Variables publicas
         #region VariablesPublicas
