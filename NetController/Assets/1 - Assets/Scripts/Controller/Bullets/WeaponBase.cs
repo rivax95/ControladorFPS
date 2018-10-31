@@ -53,6 +53,7 @@ public class WeaponBase : MonoBehaviour {
     public float damage = 20f;
     public float fireRate = 1f;
     public int bulletsInClip;
+    public float spreatBase = 0f;
     public float spreat = 0.1f;
     public float recoil = 1f;
  //   public float BulletAmountPenetration;
@@ -210,7 +211,7 @@ public class WeaponBase : MonoBehaviour {
     }
    Vector3 CrearSpread(float spread, Transform shootpoint)
    {
-       return Vector3.Lerp(shootpoint.TransformDirection(Vector3.forward * 100), Random.onUnitSphere, spread);
+       return Vector3.Lerp(shootpoint.TransformDirection(Vector3.forward * 100), Random.onUnitSphere,spread);
    }
 
     void FIRE()

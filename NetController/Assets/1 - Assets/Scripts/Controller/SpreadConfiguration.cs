@@ -4,14 +4,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SpreadData", menuName = "Weapon/Spread", order = 1)]
 public class SpreadConfiguration : ScriptableObject
 {
-    public float MinDistance;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+   
+    [Range (0f,0.1f)]
+    public float PenalizationCrounch;
+    [Range(0f, 0.1f)]
+    public float PenalizationMoving;
+    [Range(0f, 0.1f)]
+    public float PenalizationGrounded;
+
 }
+ 

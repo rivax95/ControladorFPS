@@ -32,6 +32,8 @@ public class WeaponManager : MonoBehaviour {
     [HideInInspector]
     public GrenadeBase GrenadesAvailables;
     public bool isWeapon = true;
+    [HideInInspector]
+    public bool Switch=false;
     void Awake()
     {
         if (instance == null)
@@ -102,7 +104,7 @@ public class WeaponManager : MonoBehaviour {
         //transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
         WeaponsInInventory[CurrenWeaponIndex].gameObject.SetActive(true);
         WeaponbaseCurrent = WeaponsInInventory[CurrenWeaponIndex].gameObject.GetComponent<WeaponBase>();
-        
+        Switch = false;
     }
     void CheckWeaponSwitch()
     {
@@ -115,6 +117,7 @@ public class WeaponManager : MonoBehaviour {
         {
             selecNextWeapon();
         }
+        Switch = true;
     }
 
     void SelectPreviousWeapon()

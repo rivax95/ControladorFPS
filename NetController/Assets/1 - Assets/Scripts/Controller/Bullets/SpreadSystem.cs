@@ -18,12 +18,14 @@ using Alex.Controller;
 
         #region VariablesPublicas
         
-        public SpreadSystem instancia;
+         SpreadSystem instancia;
         public Controller controlador;
+        public float spraybase;
         #endregion
 
         #region VariablesPrivadas
-        float MinSpread;
+      
+    private SpreadConfiguration Config;
         #endregion
 
         #region Inicializadores
@@ -41,15 +43,21 @@ using Alex.Controller;
         }
         void Start()
         {
-
-        }
+        spraybase = WeaponManager.instance.WeaponbaseCurrent.spreat;
+    }
         #endregion
 
         #region Actualizadores
         // Update is called once per frame
         void Update()
         {
-
+        if (WeaponManager.instance.Switch)
+        {
+            spraybase = WeaponManager.instance.WeaponbaseCurrent.spreatBase;
+        }
+        float total =GetSpray();
+        float spray = total > 0.95f ? 0.95f : total;
+        WeaponManager.instance.WeaponbaseCurrent.spreat = spray;
         }
         #endregion
 
@@ -66,20 +74,16 @@ using Alex.Controller;
     {
         return controlador.is_Crouching;
     }
-  private float distance()
+ 
+    private float GetSpray()
     {
-        RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(WeaponManager.instance.WeaponbaseCurrent.ShootPoint.transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, WeaponManager.instance.WeaponbaseCurrent.ShootRayLayer))
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-          
-        }
-        return hit.distance;
-    } 
-    private float calculateDistanceSpay()
-    {
-        
+        float total = 0f;
+        float move= IsMoving() ? 0.05f : 0f;
+        float crunch = IsCrouching() ? 0.1f : 0f;
+        float ground= IsGrounded() ? 0f : 0.1f;
+        total = (move  + ground +spraybase)-crunch;
+        Debug.Log(total);
+        return total;
     }
         #endregion
 
