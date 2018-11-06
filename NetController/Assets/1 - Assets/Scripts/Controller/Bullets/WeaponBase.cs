@@ -39,7 +39,7 @@ public class WeaponBase : MonoBehaviour {
     public AudioClip MagInSound;
     public AudioClip boltSound;
     [Header("Referencias")]
-    public RecoilAffect Scriptx;
+    public RecoilAffect RecoilAfect;
     protected Animator animator;
    // public GameObject sparkPrefab;
     public ParticleSystem muzzleFlash;
@@ -51,6 +51,7 @@ public class WeaponBase : MonoBehaviour {
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
     public Tipo TipoDeArma = Tipo.Pistola;
     public float damage = 20f;
+    public float SprayShoot = 0.01f;
     public float fireRate = 1f;
     public int bulletsInClip;
     public float spreatBase = 0f;
@@ -273,7 +274,8 @@ public class WeaponBase : MonoBehaviour {
     }
   protected virtual void Recoil()
   {
-      Scriptx.Recoil(recoil);
+      RecoilAfect.Recoil(recoil);
+      RecoilAfect.SpreadRecoil(SprayShoot);
   }
     public virtual void OnDraw()
     {

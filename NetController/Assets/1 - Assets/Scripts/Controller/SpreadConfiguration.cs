@@ -11,6 +11,16 @@ public class SpreadConfiguration : ScriptableObject
     public float PenalizationMoving;
     [Range(0f, 0.1f)]
     public float PenalizationGrounded;
+    [Range (0f,0.2f)]
+    public float RecoilSpray;
+    [Range(0f,1f)]
+    public float maxRecoilSpray;
+    [Range(0.01f, 0.99f)]
+    public float Enfriamiento;
+    [Range(0.0f, 0.99f)]
+    public float SprayShoot;
+    [Range(0.3f, 0.89f)]
+    public float SprayBase;
 
 }
  
