@@ -22,11 +22,14 @@ public class RecoilAffect : MonoBehaviour {
         private float maximun_X = 0;
     public float randomY;
     public float miny, maxy;
-    public float enfriamiento = 0.5f;
+    [HideInInspector]
+    public float enfriamiento = 0.3f;
         public float recoil=0f;
         public float recox;
         private Quaternion originalRotation;
+  //  [HideInInspector]
         public float spreadRecoil;
+    [HideInInspector]
         public float maxSpreadRecoil = 0.5f;
         private float mouseSensivity = 1.7f;
         #endregion
@@ -109,7 +112,7 @@ public class RecoilAffect : MonoBehaviour {
             }
         }
         #endregion
-        public void Recoil(float amount)
+        public void Recoil(float amount) //TODO PONER MAXIMO DE RECOIL EN LA CONFIG
         {
         randomY = Random.Range(miny, maxy);
         if (recoil > 5) return;
@@ -119,6 +122,7 @@ public class RecoilAffect : MonoBehaviour {
         }
         public void SpreadRecoil(float amount)
         {
+      //  Debug.Log(spreadRecoil + "TOTAL");
             if (spreadRecoil > maxSpreadRecoil) return;
             spreadRecoil += amount;
 

@@ -27,6 +27,12 @@ using Alex.Controller;
         #region VariablesPrivadas
       
     private SpreadConfiguration Config;
+    [HideInInspector]
+    public float penalizationCrounch;
+    [HideInInspector]
+    public float penalizationMoving;
+    [HideInInspector]
+    public float penalizationGrounded;
         #endregion
 
         #region Inicializadores
@@ -57,7 +63,8 @@ using Alex.Controller;
         {
             spraybase = WeaponManager.instance.WeaponbaseCurrent.spreatBase;
         }
-        float total =GetSpray();
+        float total =GetSpray() ;
+        //Debug.Log(total + " total");
         float spray = total > 0.95f ? 0.95f : total;
         WeaponManager.instance.WeaponbaseCurrent.spreat = spray;
         }
@@ -80,14 +87,16 @@ using Alex.Controller;
     private float GetSpray()
     {
         float total = 0f;
-        float move= IsMoving() ? 0.05f : 0f;
-        float crunch = IsCrouching() ? 0.1f : 0f;
-        float ground= IsGrounded() ? 0f : 0.1f;
-        float Recoil = Mathf.Abs( reco.spreadRecoil);
-        Debug.Log("Recoil "+Recoil);
-        total = (move  + ground +spraybase )-crunch;
-        total += Recoil;
-        Debug.Log("Spray ="+total);
+        float move= IsMoving() ? penalizationMoving : 0f;
+        float crunch = IsCrouching() ? penalizationCrounch : 0f;
+        float ground= IsGrounded() ? 0f : penalizationGrounded;
+        //float Recoil = Mathf.Abs(reco.spreadRecoil);
+        //Debug.Log("Recoil "+Recoil);
+        total = ((move + ground + spraybase) - crunch) + Mathf.Abs(reco.spreadRecoil);
+        
+        Debug.LogWarningFormat("Info: {0} = {1} + {2} + {3} - {4} + {5}", total, move, ground, spraybase, crunch, reco.spreadRecoil);
+        //total += Recoil;
+        //Debug.Log("Spray ="+total);
         return total;
     }
         #endregion

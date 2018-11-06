@@ -19,7 +19,8 @@ public class CrossHair : MonoBehaviour
 
     public enum preset { none, shotgunPreset, crysisPreset }
     public preset crosshairPreset = preset.none;
-
+    WeaponBase Wbase;
+    public RecoilAffect recoil;
     public bool showCrosshair = true;
     public Texture2D verticalTexture;
     public Texture2D horizontalTexture;
@@ -39,22 +40,30 @@ public class CrossHair : MonoBehaviour
 
     [HideInInspector]
     public Texture2D temp;
-    [HideInInspector]
+    
     public float spread;
 
     void Start()
     {
         crosshairPreset = preset.none;
+        Wbase = this.gameObject.GetComponent<WeaponBase>();
     }
 
     void Update()
     {
+        OperationValues();
         //Used just for test (weapon script should change spread).
-        if (Input.GetKey(KeyCode.K)) spread += spreadPerSecond * Time.deltaTime;
-        else spread -= spreadPerSecond * 2 * Time.deltaTime;
+        //if (Input.GetKey(KeyCode.K)) spread += spreadPerSecond * Time.deltaTime;
+        //else spread -= spreadPerSecond * 2 * Time.deltaTime;
 
         //Rotation
         rotAngle += rotSpeed * Time.deltaTime;
+    }
+    void OperationValues()
+    {
+
+        spread = (recoil.spreadRecoil * (maxSpread-minSpread)) / (recoil.maxSpreadRecoil) + minSpread;
+        
     }
 
     void OnGUI()

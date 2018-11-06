@@ -40,11 +40,13 @@ public class WeaponBase : MonoBehaviour {
     public AudioClip boltSound;
     [Header("Referencias")]
     public RecoilAffect RecoilAfect;
+    public SpreadSystem SpraySystem;
     protected Animator animator;
    // public GameObject sparkPrefab;
     public ParticleSystem muzzleFlash;
     public ParticleSystem bloodFX;
     [Header("Weapon Attributes")]
+    public SpreadConfiguration SprayConf;
     public string Name;
     public bool isPistol;
     public LayerMask ShootRayLayer;
@@ -79,6 +81,7 @@ public class WeaponBase : MonoBehaviour {
         bulletsInClip = clipSize;
         bulletsLeft = maxAmmo;
         Invoke("EnableWeapon", 1f); // pasar a corrutinas
+        AsingConfigurations();
 
     }
     void EnableWeapon()
@@ -341,5 +344,16 @@ protected    void resetReloading()
                 break;
 
         }
+    }
+    private void AsingConfigurations()
+    {
+        SpraySystem.penalizationCrounch=SprayConf.PenalizationCrounch;
+        SpraySystem.penalizationGrounded = SprayConf.PenalizationGrounded;
+        SpraySystem.penalizationMoving = SprayConf.PenalizationMoving ;
+      //  RecoilAfect.spreadRecoil = SprayConf.RecoilSpray;
+        RecoilAfect.maxSpreadRecoil = SprayConf.maxRecoilSpray;
+        RecoilAfect.enfriamiento = SprayConf.Enfriamiento;
+        SprayShoot = SprayConf.SprayShoot;
+        spreatBase = SprayConf.SprayBase;
     }
 }

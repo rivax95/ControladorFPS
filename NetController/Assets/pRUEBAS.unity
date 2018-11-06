@@ -5924,7 +5924,6 @@ MonoBehaviour:
   is_FailJump: 0
   is_reloading: 0
   can_Moving: 0
-  die: 0
   velocity: 0
   lastUpdateY: 0
   fallDistance: 0
@@ -13240,9 +13239,11 @@ MonoBehaviour:
   MagOutSound: {fileID: 0}
   MagInSound: {fileID: 0}
   boltSound: {fileID: 8300000, guid: 6602c59bcf542a14fa5a2801a1e0ed5a, type: 3}
-  Scriptx: {fileID: 0}
+  RecoilAfect: {fileID: 0}
+  SpraySystem: {fileID: 0}
   muzzleFlash: {fileID: 3877716}
   bloodFX: {fileID: 198000011254678926, guid: abb9f519b142e304d9c45b56afa768bc, type: 2}
+  SprayConf: {fileID: 0}
   Name: 
   isPistol: 0
   ShootRayLayer:
@@ -13251,6 +13252,7 @@ MonoBehaviour:
   fireMode: 0
   TipoDeArma: 0
   damage: 20
+  SprayShoot: 0.01
   fireRate: 1
   bulletsInClip: 0
   spreatBase: 0
@@ -13457,6 +13459,7 @@ GameObject:
   - component: {fileID: 434073896}
   - component: {fileID: 434073895}
   - component: {fileID: 434073894}
+  - component: {fileID: 434073898}
   m_Layer: 0
   m_Name: UMP45
   m_TagString: Untagged
@@ -13516,9 +13519,11 @@ MonoBehaviour:
   MagOutSound: {fileID: 8300000, guid: 30f315ff55b6a1a45a8b6de2bdf24a37, type: 3}
   MagInSound: {fileID: 8300000, guid: e589257cb9eedf74a8e505318a6e7f98, type: 3}
   boltSound: {fileID: 8300000, guid: 7dbad30ab37cdaf41a027a3fbee320e2, type: 3}
-  Scriptx: {fileID: 1939575879}
+  RecoilAfect: {fileID: 1939575879}
+  SpraySystem: {fileID: 1939575880}
   muzzleFlash: {fileID: 418130374}
   bloodFX: {fileID: 198000011254678926, guid: abb9f519b142e304d9c45b56afa768bc, type: 2}
+  SprayConf: {fileID: 11400000, guid: 30c33513f43f937428be0ba19f63f60d, type: 2}
   Name: 
   isPistol: 0
   ShootRayLayer:
@@ -13527,6 +13532,7 @@ MonoBehaviour:
   fireMode: 1
   TipoDeArma: 1
   damage: 20
+  SprayShoot: 0.05
   fireRate: 0.15
   bulletsInClip: 0
   spreatBase: 0.75
@@ -13536,7 +13542,7 @@ MonoBehaviour:
   minpenetration: 0
   clipSize: 30
   bulletsLeft: 0
-  maxAmmo: 100
+  maxAmmo: 120
   Playeranim: {fileID: 374045224}
   ShootPoint: {fileID: 1974175358}
   type: 0
@@ -13639,6 +13645,31 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &434073898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 434073892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b743abd0a4a6241b09b8bcfa919066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crosshairPreset: 0
+  recoil: {fileID: 1939575879}
+  showCrosshair: 1
+  verticalTexture: {fileID: 2800000, guid: 41b083e2a0f602848bc04db1e1291e63, type: 3}
+  horizontalTexture: {fileID: 2800000, guid: ce260766da3fde64d8d3497009eafe8e, type: 3}
+  cLength: 10
+  cWidth: 3
+  minSpread: 30
+  maxSpread: 120
+  spreadPerSecond: 150
+  rotAngle: 0
+  rotSpeed: 0
+  temp: {fileID: 0}
+  spread: 0
 --- !u!1 &435031623
 GameObject:
   m_ObjectHideFlags: 0
@@ -15558,9 +15589,11 @@ MonoBehaviour:
   MagOutSound: {fileID: 8300000, guid: 30f315ff55b6a1a45a8b6de2bdf24a37, type: 3}
   MagInSound: {fileID: 8300000, guid: e589257cb9eedf74a8e505318a6e7f98, type: 3}
   boltSound: {fileID: 8300000, guid: be84c78cd01fa6044ab5e4869890ef4d, type: 3}
-  Scriptx: {fileID: 0}
+  RecoilAfect: {fileID: 0}
+  SpraySystem: {fileID: 0}
   muzzleFlash: {fileID: 402688632}
   bloodFX: {fileID: 198000011254678926, guid: abb9f519b142e304d9c45b56afa768bc, type: 2}
+  SprayConf: {fileID: 0}
   Name: 
   isPistol: 1
   ShootRayLayer:
@@ -15569,6 +15602,7 @@ MonoBehaviour:
   fireMode: 0
   TipoDeArma: 0
   damage: 20
+  SprayShoot: 0.01
   fireRate: 0.25
   bulletsInClip: 12
   spreatBase: 0
@@ -16401,7 +16435,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Version: 0.01'
+  m_Text: 'Version: 0.03'
 --- !u!222 &762090975
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23376,7 +23410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1850846794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24126,8 +24160,11 @@ MonoBehaviour:
   randomY: 0
   miny: -0.3
   maxy: 0.3
+  enfriamiento: 0.5
   recoil: 0
   recox: 0
+  spreadRecoil: 0
+  maxSpreadRecoil: 0.5
 --- !u!114 &1939575880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24141,6 +24178,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlador: {fileID: 374045222}
   spraybase: 0
+  penalizationCrounch: 0
+  penalizationMoving: 0
+  penalizationGrounded: 0
 --- !u!1 &1952373872
 GameObject:
   m_ObjectHideFlags: 0

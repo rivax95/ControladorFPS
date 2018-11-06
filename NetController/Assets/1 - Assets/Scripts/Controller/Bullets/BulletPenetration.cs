@@ -43,7 +43,7 @@ public class BulletPenetration : MonoBehaviour
 
         foreach (RaycastHit impacto in impactos_delanteros)
         {
-            Debug.Log(Vector3.Distance(impacto.point, origen));
+//            Debug.Log(Vector3.Distance(impacto.point, origen));
         }
         for (int i = impactos_delanteros.Count -1; i >= 0; i--)
         {
