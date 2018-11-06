@@ -22,11 +22,12 @@ public class RecoilAffect : MonoBehaviour {
         private float maximun_X = 0;
     public float randomY;
     public float miny, maxy;
-
+    public float enfriamiento = 0.5f;
         public float recoil=0f;
         public float recox;
         private Quaternion originalRotation;
-
+        public float spreadRecoil;
+        public float maxSpreadRecoil = 0.5f;
         private float mouseSensivity = 1.7f;
         #endregion
         #region inicializadores
@@ -43,6 +44,7 @@ public class RecoilAffect : MonoBehaviour {
         void Update()
         {
             HandleRotation();
+            RestartSpread();
         }
 
         #endregion
@@ -95,6 +97,17 @@ public class RecoilAffect : MonoBehaviour {
        
          
         }
+        void RestartSpread()
+        {
+            if (spreadRecoil > 0f)
+            {
+                spreadRecoil -= Time.deltaTime * enfriamiento;
+            }
+            else
+            {
+                spreadRecoil = 0;
+            }
+        }
         #endregion
         public void Recoil(float amount)
         {
@@ -104,5 +117,10 @@ public class RecoilAffect : MonoBehaviour {
         
        
         }
-    
+        public void SpreadRecoil(float amount)
+        {
+            if (spreadRecoil > maxSpreadRecoil) return;
+            spreadRecoil += amount;
+
+        }
 }

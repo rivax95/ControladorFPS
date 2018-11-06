@@ -20,6 +20,7 @@ using Alex.Controller;
         
          SpreadSystem instancia;
         public Controller controlador;
+         RecoilAffect reco;
         public float spraybase;
         #endregion
 
@@ -40,6 +41,7 @@ using Alex.Controller;
                 Debug.LogError("Ya existe un SpreadSystem en la escena");
             }
 
+            reco = this.gameObject.GetComponent<RecoilAffect>();
         }
         void Start()
         {
@@ -81,8 +83,11 @@ using Alex.Controller;
         float move= IsMoving() ? 0.05f : 0f;
         float crunch = IsCrouching() ? 0.1f : 0f;
         float ground= IsGrounded() ? 0f : 0.1f;
-        total = (move  + ground +spraybase)-crunch;
-        Debug.Log(total);
+        float Recoil = Mathf.Abs( reco.spreadRecoil);
+        Debug.Log("Recoil "+Recoil);
+        total = (move  + ground +spraybase )-crunch;
+        total += Recoil;
+        Debug.Log("Spray ="+total);
         return total;
     }
         #endregion
