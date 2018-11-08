@@ -27,7 +27,7 @@ public enum Tipo
 public class WeaponBase : MonoBehaviour {
 
     protected AudioSource audiosource;
-   protected  bool fireLock;
+   public  bool fireLock;
     protected  bool canShoot;
     public bool Shoot = false;
     public bool isReloading = false;
@@ -48,6 +48,8 @@ public class WeaponBase : MonoBehaviour {
     [Header("Weapon Attributes")]
     public SpreadConfiguration SprayConf;
     public string Name;
+    [Range(1, 8)]
+    public int BulletsPerShoot;
     public bool isPistol;
     public LayerMask ShootRayLayer;
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
@@ -76,6 +78,7 @@ public class WeaponBase : MonoBehaviour {
     }
     void Start()
     {
+        isReloading = false;
         animator = GetComponent<Animator>();
         audiosource = GetComponent<AudioSource>();
         bulletsInClip = clipSize;
@@ -206,11 +209,14 @@ public class WeaponBase : MonoBehaviour {
         // }
         #endregion
         #region segundoIntento
-        BulletPenetration balaPen = new BulletPenetration();
-        balaPen.maxObjetos = 4;
-        Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
-        balaPen.Raycasting(1200, ShootPoint.transform.position,direct, ShootRayLayer);
-        Debug.Log("Disparo el hits");
+        for (int i = 0; i < BulletsPerShoot; i++)
+        {
+            BulletPenetration balaPen = new BulletPenetration();
+            balaPen.maxObjetos = 4;
+            Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
+            balaPen.Raycasting(1200, ShootPoint.transform.position, direct, ShootRayLayer);
+            Debug.Log("Disparo el hits");
+        }
 #endregion
     }
    Vector3 CrearSpread(float spread, Transform shootpoint)

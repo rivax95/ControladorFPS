@@ -45,7 +45,7 @@ public class CrossHair : MonoBehaviour
 
     void Start()
     {
-        crosshairPreset = preset.none;
+      //  crosshairPreset = preset.none;
         Wbase = this.gameObject.GetComponent<WeaponBase>();
     }
 

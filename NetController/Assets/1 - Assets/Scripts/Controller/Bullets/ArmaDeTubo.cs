@@ -17,6 +17,8 @@ public class ArmaDeTubo : WeaponBase {
   
     protected override void Reload()
     {
+     
+
         if (isReloading) return;
         isReloading = true;
         if (bulletsInClip <= 0)

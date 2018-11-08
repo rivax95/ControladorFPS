@@ -100,6 +100,8 @@ public class WeaponManager : MonoBehaviour {
         for (int i = 0; i < WeaponsInInventory.Count ; i++)
         {
             WeaponsInInventory[i].gameObject.SetActive(false);
+            WeaponsInInventory[i].isReloading = false;
+            WeaponsInInventory[i].fireLock = false;
         }
         //transform.Find(weapons[CurrenWeaponIndex].ToString()).gameObject.SetActive(true);
         WeaponsInInventory[CurrenWeaponIndex].gameObject.SetActive(true);
@@ -109,6 +111,7 @@ public class WeaponManager : MonoBehaviour {
     void CheckWeaponSwitch()
     {
         float mousewheel = Input.GetAxis("Mouse ScrollWheel");
+        if (WeaponsInInventory.Count < 2) return;
         if (mousewheel > 0)
         {
             SelectPreviousWeapon();

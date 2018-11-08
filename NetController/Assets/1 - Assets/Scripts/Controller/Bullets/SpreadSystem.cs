@@ -93,7 +93,7 @@ using Alex.Controller;
         //float Recoil = Mathf.Abs(reco.spreadRecoil);
         //Debug.Log("Recoil "+Recoil);
         total = ((move + ground + spraybase) - crunch) + Mathf.Abs(reco.spreadRecoil);
-        
+        total = total > 0.98f ? 0.98f : total;
         Debug.LogWarningFormat("Info: {0} = {1} + {2} + {3} - {4} + {5}", total, move, ground, spraybase, crunch, reco.spreadRecoil);
         //total += Recoil;
         //Debug.Log("Spray ="+total);

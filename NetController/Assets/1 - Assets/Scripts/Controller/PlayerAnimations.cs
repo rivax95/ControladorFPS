@@ -105,6 +105,10 @@ public class PlayerAnimations : MonoBehaviour {
     {
         anim.SetBool("Is_Grounded", isGrounded);
     }
+    public void Caida(bool bolean)
+    {
+        anim.SetBool("Caida", bolean);
+    }
     public float TimeSHott()
     {
 

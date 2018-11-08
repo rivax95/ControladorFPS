@@ -423,10 +423,14 @@ namespace Alex.Controller
         #endregion
         //Corrutines Movement
         #region corrutinasMovimiento
-    
+        IEnumerator CaidaFalse()
+        {
+            yield return new WaitForSeconds(0.5f);
+            playerAnimations.Caida(false);
+        }
             IEnumerator PenaltyMovement(float PenalityTiming)
         {
-         
+            StartCoroutine(CaidaFalse());
             //Min = Vector3.zero;
             //Max = Vector3.zero;
           //  controlAirState = true;
@@ -496,9 +500,12 @@ namespace Alex.Controller
 
 
                 }
-             
+                if (fallDistance > MinFailAir)
+                {
+                    playerAnimations.Caida(true);
+                }
 
-                Min = transform.position;
+                    Min = transform.position;
                
             }
             else
@@ -510,6 +517,8 @@ namespace Alex.Controller
                     //StopCoroutine(MoveCameraCrounch());
                     //StartCoroutine(MoveCameraCrounch());
                     //is_Crouching = false;
+                 
+                    Debug.Log("caida de: " + fallDistance);
                 }
                 fallDistance = 0;
                 lastUpdateY = 0;
