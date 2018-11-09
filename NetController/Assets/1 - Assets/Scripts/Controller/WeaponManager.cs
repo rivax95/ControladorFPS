@@ -201,25 +201,29 @@ public class WeaponManager : MonoBehaviour {
     }
    public void ActualizarInventario()
     {
-        foreach (WeaponBase item in WeaponsInInventory)
+        for (int i = 0; i < WeaponsInInventory.Count; i++)
         {
-            try
+              try
             {
-                item.gameObject.SetActive(true);
+               WeaponsInInventory[i].gameObject.SetActive(true);
+                 
             }
             catch { }
         }
+      
         WeaponsInInventory.Clear();
         foreach (Transform t in this.transform)
         {
             WeaponsInInventory.Add(t.gameObject.GetComponent<WeaponBase>());
         }
-
+       
       
         foreach (WeaponBase item in WeaponsInInventory)
         {
             item.gameObject.SetActive(false);
         }
+        WeaponsInInventory[0].gameObject.SetActive(true);
+        WeaponbaseCurrent = WeaponsInInventory[0];
     }
    
 }

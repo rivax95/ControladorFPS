@@ -24,7 +24,7 @@ namespace Alex.Controller
         public float timeAir,timeCrouch,timeShifting,timeMoving,timeRuning,GroundedDistance,MaxAirDistance;
         public bool is_Moving, is_Grounded, is_Crouching, is_Shiftting, is_Jumping, is_Runing, is_FailJump, is_reloading;
         public bool can_Moving ;
-      //  public bool die;
+       public bool die;
         public float velocity;
         private Health health;
        // private bool controlAirState;
@@ -114,15 +114,15 @@ namespace Alex.Controller
         void Update()
         {
             CheckHealth();
-        //    if (!die)
-          //  {
+          if (!die)
+           {
                 controlStateAir();
 
                 PlayerMovement();
-
+                SelectWeapon();
              
-          //  }
-            SelectWeapon();
+            }
+           
         }
         #endregion
         //Logica Armas

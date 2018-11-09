@@ -21,15 +21,22 @@ public class Health : MonoBehaviour {
     public GameObject DeffectWeapon;
     public GameObject WeaponFather;
     public Transform Respawn;
+    private Controller control;
+    public void Start()
+    {
+        control = this.gameObject.GetComponent<Controller>();
+    }
     public void Update()
     {
-        if (died)
+        if (died && !control.die)
         {
             died =false;
+            control.die = true;
             Died();
         }
-        if (res)
+        if (res && control.die)
         {
+            control.die = false;
             res = false;
             revive(Respawn);
         }
@@ -47,7 +54,7 @@ public class Health : MonoBehaviour {
         }
 
         this.gameObject.GetComponent<Animator>().enabled = false;
-        this.gameObject.GetComponent<Controller>().enabled = false;
+    //    this.gameObject.GetComponent<Controller>().enabled = false;
         this.gameObject.GetComponent<MauseLook>().enabled = false;
         this.gameObject.transform.Find("Recoil").gameObject.SetActive(false);
         this.gameObject.GetComponent<CharacterController>().enabled = false;
@@ -56,15 +63,17 @@ public class Health : MonoBehaviour {
     public void revive(Transform Respawn)
     {
         this.gameObject.GetComponent<Animator>().enabled = true;
-        this.gameObject.GetComponent<Controller>().enabled = true;
+       // this.gameObject.GetComponent<Controller>().enabled = true;
         this.gameObject.GetComponent<MauseLook>().enabled = true;
         this.gameObject.transform.Find("Recoil").gameObject.SetActive(true);
         this.gameObject.GetComponent<CharacterController>().enabled = true;
         camera.SetActive(false);
 
-        Instantiate(DeffectWeapon, WeaponFather.transform);
+        GameObject DeffectWeapn= Instantiate(DeffectWeapon, WeaponFather.transform);
+      
         this.transform.position = Respawn.position;
         WeaponManager.instance.ActualizarInventario();
+        DeffectWeapn.SetActive(true);
     }
 
 }

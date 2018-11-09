@@ -51,17 +51,23 @@ public class WeaponBase : MonoBehaviour {
     [Range(1, 8)]
     public int BulletsPerShoot;
     public bool isPistol;
+    public bool MarkedShoots;
     public LayerMask ShootRayLayer;
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
     public Tipo TipoDeArma = Tipo.Pistola;
     public float damage = 20f;
+    [HideInInspector]
     public float SprayShoot = 0.01f;
     public float fireRate = 1f;
     public int bulletsInClip;
+    [HideInInspector]
     public float spreatBase = 0f;
+    [HideInInspector]
     public float spreat = 0.1f;
     public float recoil = 1f;
  //   public float BulletAmountPenetration;
+    public float Distance;
+    
     public float penetration;
     public float minpenetration;
     public int clipSize  =12;
@@ -212,10 +218,12 @@ public class WeaponBase : MonoBehaviour {
         for (int i = 0; i < BulletsPerShoot; i++)
         {
             BulletPenetration balaPen = new BulletPenetration();
-            balaPen.maxObjetos = 4;
+          
             Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
-            balaPen.Raycasting(1200, ShootPoint.transform.position, direct, ShootRayLayer);
-            Debug.Log("Disparo el hits");
+          //  balaPen.Raycasting(1200, ShootPoint.transform.position, direct, ShootRayLayer);
+            balaPen.BidirectionalRaycastNonAlloc(ShootPoint.transform.position, 0f, direct, Distance,ShootRayLayer,  balaPen.entries,   balaPen.exits,   balaPen.intersections, "Enemy", MarkedShoots);
+            Debug.Log("Disparo el hit: "+balaPen.intersections.Count);
+            
         }
 #endregion
     }
