@@ -14,25 +14,29 @@ public class Penetration : MonoBehaviour
 {
 
     public float value;
-    public enum Material { Cemento, Metal, Madera, Cristal, Suelo }
+    public enum Material { Cemento, Metal, Madera, Cristal, Suelo,Player }
     public Material TipoMaterial;
     private void Start()
     {
         switch(TipoMaterial){ 
+            case Material.Player:
+                    value =2;
+                    break;
+                
             case Material.Cemento:
-                value = 2700f;
+                value = 3;
                 break;
             case Material.Madera:
-                value = 1200f;
+                value = 1;
                 break;
             case Material.Metal:
-                value = 7200;
+                value = 4;
                 break;
             case Material.Suelo:
-                value = 100000;
+                value = 8;
                 break;
             case Material.Cristal:
-                value = 300;
+                value = 0.5f;
                 break;
     }
 

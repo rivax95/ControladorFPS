@@ -178,7 +178,7 @@ namespace Alex.Controller
             //Disparo
             if (weapon_Manager.WeaponbaseCurrent.Shoot )
             {
-                Debug.Log("Pulsado");
+                //Debug.Log("Pulsado");
              
 
                 if (is_Crouching)

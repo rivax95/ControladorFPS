@@ -56,6 +56,8 @@ public class WeaponBase : MonoBehaviour {
     public ModoDeFuego fireMode = ModoDeFuego.FullAuto;
     public Tipo TipoDeArma = Tipo.Pistola;
     public float damage = 20f;
+    [Range(1f,15f)]
+    public float Resistencia;
     [HideInInspector]
     public float SprayShoot = 0.01f;
     public float fireRate = 1f;
@@ -121,7 +123,7 @@ public class WeaponBase : MonoBehaviour {
         if (bulletsInClip > 0)
         {
             FIRE();
-            Debug.Log("DisaproController1");
+            //Debug.Log("DisaproController1");
         }
         else
         {
@@ -222,7 +224,8 @@ public class WeaponBase : MonoBehaviour {
             Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
           //  balaPen.Raycasting(1200, ShootPoint.transform.position, direct, ShootRayLayer);
             balaPen.BidirectionalRaycastNonAlloc(ShootPoint.transform.position, 0f, direct, Distance,ShootRayLayer,  balaPen.entries,   balaPen.exits,   balaPen.intersections, "Enemy", MarkedShoots);
-            Debug.Log("Disparo el hit: "+balaPen.intersections.Count);
+            balaPen.AplicarDaño(Resistencia,damage);
+            //Debug.Log("Disparo el hit: "+balaPen.intersections.Count);
             
         }
 #endregion

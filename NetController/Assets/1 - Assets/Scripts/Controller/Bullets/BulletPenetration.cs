@@ -13,9 +13,11 @@ public class BulletPenetration : MonoBehaviour
                      exits = new RaycastHit[8];
    public List<RaycastHit> intersections = new List<RaycastHit>(16);
     public GameObject marcador;
-    public List<float> Distancias=new List<float>(4);
+    public List<float> Distancias=new List<float>(8);
     public GameObject[] Players=new GameObject[8];
 
+    public List<Penetration> WallBang = new List<Penetration>(16);
+    public Transform LasPoint;
     public void BidirectionalRaycastNonAlloc(Vector3 origin, float radius, Vector3 direction, float length,LayerMask Maskara, RaycastHit[] entries,  RaycastHit[] exits,  List<RaycastHit> hits,string Tag,bool MarkedPositions)
     {
         Distancias.Clear();
@@ -59,7 +61,7 @@ public class BulletPenetration : MonoBehaviour
         {
             for (int i = 0; i < hits.Count; i++)
             {
-                Debug.Log("holaca");
+
                 marcador = Resources.Load("Marcador") as GameObject;
                 GameObject marca = Instantiate(marcador);
                 marca.transform.position = hits[i].point;
@@ -69,7 +71,7 @@ public class BulletPenetration : MonoBehaviour
         GameObject marcaa = Instantiate(marcador);
         marcaa.transform.position = entries[entries.Length-1].point;
         marcaa.name = "Hitfinal";
-        Debug.Log(hits.Count);
+      
      
            for (int i = 0; i < Mathf.CeilToInt(hits.Count / 2); i++)
             {
@@ -90,6 +92,82 @@ public class BulletPenetration : MonoBehaviour
 
        // Debug.Log( Vector3.Distance( hits[1].point,hits[2].point));
     }
+    public void AplicarDaño(float Resistencia,float daño)
+    {
+        WallBang.Clear();
+        float calculateRes = Resistencia;
+        Debug.Log(entries.Length);
+        for (int i = 0; i < entries.Length; i++)
+        {
+            if (entries[i].collider != null)
+            {
+                if (entries[i].collider.GetComponent<Penetration>() != null)
+                {
+                    WallBang.Add(intersections[i].collider.GetComponent<Penetration>());
+                    Debug.Log(i + "entries");
+                }
+                else
+                {
+                    LasPoint = intersections[i].collider.GetComponent<Transform>();
+                    return;
+                }
+            }
+        }
+        for (int i = 0; i < WallBang.Count; i++)
+        {
+            calculateRes -= Distancias[i] * WallBang[i].value;
+            float dañofinal =  calculateRes * daño / Resistencia;
+         
+            Debug.Log(calculateRes+" "+ dañofinal +" "+WallBang.Count +" "+Distancias.Count);
+            Debug.Log(i + "Daño final :"+dañofinal);
+        }
+
+    }
+    public static float CalculateDrag(float velocityVec, float distance,float rhoo)
+    {
+        //F_drag = k * v^2 = m * a
+        //k = 0.5 * C_d * rho * A 
+
+        float m = 0.2f; // kg peso de bala
+        float C_d = 0.5f; // coheficiente areodinamico de resistencia
+        float A = Mathf.PI * 0.05f * 0.05f; // m^2 Velocidad Inicial
+        float rho = rhoo; // kg/m3 tipo de densidad de material
+
+        float k = distance * C_d * rho * A;
+
+        float vSqr = velocityVec;
+
+        float aDrag = (k * vSqr) / m;
+
+        //Has to be in a direction opposite of the bullet's velocity vector
+        float dragVec = aDrag * velocityVec * -1f;
+      //  Debug.Log(dragVec);
+        return dragVec;
+    }
+    public static float calculateVelocity(float velocidad, float distanciaa,float resistencia)
+    {
+        float ec = 0.008f * velocidad; //energia cinetica
+        float Trabajoresistencia = resistencia * (distanciaa);
+        float EnergiaCinetica = ec - Trabajoresistencia;
+        float velocdiad = 0.008f * (Mathf.Pow(EnergiaCinetica, 2) / 2);
+        Debug.Log("velocidad");
+        return velocdiad;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     #region 2ºIteracion //Descartada por alto consumo y baja eficiencia
 //    public void Raycasting(float velocity, Vector3 orig,Vector3 direc, LayerMask mascara)
