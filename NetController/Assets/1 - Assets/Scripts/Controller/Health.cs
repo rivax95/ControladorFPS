@@ -22,12 +22,18 @@ public class Health : MonoBehaviour {
     public GameObject WeaponFather;
     public Transform Respawn;
     private Controller control;
+    public static Health Instance;
     public void Start()
     {
         control = this.gameObject.GetComponent<Controller>();
+        if (Instance ==null)
+        {
+            Instance = this;
+        }
     }
     public void Update()
     {
+        if (value <= 0) { died = true; StartCoroutine(RespawnCo()); }
         if (died && !control.die)
         {
             died =false;
@@ -74,6 +80,11 @@ public class Health : MonoBehaviour {
         this.transform.position = Respawn.position;
         WeaponManager.instance.ActualizarInventario();
         DeffectWeapn.SetActive(true);
+    }
+    IEnumerator RespawnCo()
+    {
+        yield return new WaitForSeconds(5f);
+        revive(Respawn);
     }
 
 }

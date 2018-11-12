@@ -115,9 +115,14 @@ public class BulletPenetration : MonoBehaviour
         }
         for (int i = 0; i < WallBang.Count; i++)
         {
+            if (i == 5) break; // Maximo de wallbang que va a hacer
             calculateRes -= Distancias[i] * WallBang[i].value;
             float dañofinal =  calculateRes * daño / Resistencia;
-         
+            dañofinal = (dañofinal < 0) ? 0 : dañofinal;
+            if (entries[i].collider.CompareTag("Enemy"))
+            {
+                entries[i].collider.gameObject.GetComponent<HitInfoSite>().Damage(dañofinal);
+            }
             Debug.Log(calculateRes+" "+ dañofinal +" "+WallBang.Count +" "+Distancias.Count);
             Debug.Log(i + "Daño final :"+dañofinal);
         }
