@@ -56,7 +56,51 @@ public class BulletPenetration : MonoBehaviour
        
         entries = entries.OrderBy(o => Vector3.Distance(o.point, origin)).ToArray<RaycastHit>();
         exits = exits.OrderBy(o => Vector3.Distance(o.point, origin)).ToArray<RaycastHit>();
+        //Veo los que son inguales 
+        List<RaycastHit> tmpEntries = entries.ToList<RaycastHit>();
+        List<RaycastHit> tmpExits = entries.ToList<RaycastHit>();
+        List<RaycastHit> Removes=new List<RaycastHit>(20);
+        int exception;
+        for (int o = 0; o < tmpEntries.Count; o++)
+        {
+            exception = o;
 
+            for (int i = 0; i < tmpEntries.Count; i++)
+            {
+                if (i != o && tmpEntries[i].collider!=null)
+                {
+                    List<RaycastHit> item = tmpEntries.Where(x => x.collider.transform.root == tmpEntries[i].collider.transform.root).ToList();
+                    for (int e = 0; e < item.Count; e++)
+                    {
+                        Removes.Add(item[e]);
+                    }
+                }
+            }
+        }
+        //if (entries.Length >= 1)
+        //{
+        //    for (int i = 0; i < entries.Length; i++)
+        //    {
+        //        bool comprobation = i != 0 ? entries[i - 1].collider : entries[i].collider;
+        //        if (comprobation)
+        //        {   if()
+        //            if (entries[i].collider.transform.root == (i != 0 ? entries[i - 1].collider.transform.root : entries[i].collider.transform.root))
+        //            {
+        //                Removes.Add(i);
+        //            }
+        //        }
+
+        //    }
+        //}
+        //Los elimino
+        
+        for (int i = 0; i < Removes.Count; i++)
+        {
+            tmpEntries.Remove(Removes[i]);
+            tmpExits.Remove(Removes[i]);
+        }
+        entries = tmpEntries.ToArray();
+        exits = tmpExits.ToArray();
         if (MarkedPositions)
         {
             for (int i = 0; i < hits.Count; i++)
@@ -116,7 +160,8 @@ public class BulletPenetration : MonoBehaviour
         for (int i = 0; i < WallBang.Count; i++)
         {
             if (i == 5) break; // Maximo de wallbang que va a hacer
-            calculateRes -= Distancias[i] * WallBang[i].value;
+            calculateRes -= Distancias[i] 
+                * WallBang[i].value;
             float dañofinal =  calculateRes * daño / Resistencia;
             dañofinal = (dañofinal < 0) ? 0 : dañofinal;
             if (entries[i].collider.CompareTag("Enemy"))
