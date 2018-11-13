@@ -13,7 +13,7 @@ public class BulletPenetration : MonoBehaviour
                      exits = new RaycastHit[8];
    public List<RaycastHit> intersections = new List<RaycastHit>(16);
     public GameObject marcador;
-    public List<float> Distancias=new List<float>(8);
+    public List<float> Distancias=new List<float>(16);
     public GameObject[] Players=new GameObject[8];
 
     public List<Penetration> WallBang = new List<Penetration>(16);
@@ -56,27 +56,34 @@ public class BulletPenetration : MonoBehaviour
        
         entries = entries.OrderBy(o => Vector3.Distance(o.point, origin)).ToArray<RaycastHit>();
         exits = exits.OrderBy(o => Vector3.Distance(o.point, origin)).ToArray<RaycastHit>();
-        //Veo los que son inguales 
-        List<RaycastHit> tmpEntries = entries.ToList<RaycastHit>();
-        List<RaycastHit> tmpExits = entries.ToList<RaycastHit>();
-        List<RaycastHit> Removes=new List<RaycastHit>(20);
-        int exception;
-        for (int o = 0; o < tmpEntries.Count; o++)
-        {
-            exception = o;
+        ////Veo los que son inguales 
+        //List<RaycastHit> tmpEntries = entries.ToList<RaycastHit>();
+        //List<RaycastHit> tmpExits = entries.ToList<RaycastHit>();
+        //List<RaycastHit> Removes=new List<RaycastHit>(20);
+        //int exception;
 
-            for (int i = 0; i < tmpEntries.Count; i++)
-            {
-                if (i != o && tmpEntries[i].collider!=null)
-                {
-                    List<RaycastHit> item = tmpEntries.Where(x => x.collider.transform.root == tmpEntries[i].collider.transform.root).ToList();
-                    for (int e = 0; e < item.Count; e++)
-                    {
-                        Removes.Add(item[e]);
-                    }
-                }
-            }
-        }
+        //for (int o = 0; o < tmpEntries.Count; o++) //Exception for
+        //{
+        //    exception = o;
+
+        //    for (int i = 0; i < tmpEntries.Count; i++)
+        //    {
+        //        if (i != o && tmpEntries[i].collider!=null && tmpEntries[o].collider!=null&& !Removes.Contains(tmpEntries[i]))
+        //        {
+        //            Debug.Log(i + " "+o);
+        //            if (tmpEntries[o].transform.root.gameObject == tmpEntries[i].transform.root.gameObject)
+        //            {
+        //                Removes.Add(tmpEntries[i]);
+        //                Removes.Add(tmpExits[i]);
+        //            }
+        //            //List<RaycastHit> item = tmpEntries.Where(x => x.collider.transform.root == tmpEntries[i].collider.transform.root).ToList();
+        //            //for (int e = 0; e < item.Count; e++)
+        //            //{
+        //            //    Removes.Add(item[e]);
+        //            //}
+        //        }
+        //    }
+        //}
         //if (entries.Length >= 1)
         //{
         //    for (int i = 0; i < entries.Length; i++)
@@ -92,15 +99,15 @@ public class BulletPenetration : MonoBehaviour
 
         //    }
         //}
-        //Los elimino
-        
-        for (int i = 0; i < Removes.Count; i++)
-        {
-            tmpEntries.Remove(Removes[i]);
-            tmpExits.Remove(Removes[i]);
-        }
-        entries = tmpEntries.ToArray();
-        exits = tmpExits.ToArray();
+        ////Los elimino
+        //Debug.Log(Removes.Count);
+        //for (int i = 0; i < Removes.Count; i++)
+        //{
+        //    tmpEntries.Remove(Removes[i]);
+        //    tmpExits.Remove(Removes[i]);
+        //}
+        //entries = tmpEntries.ToArray();
+        //exits = tmpExits.ToArray();
         if (MarkedPositions)
         {
             for (int i = 0; i < hits.Count; i++)
@@ -109,12 +116,13 @@ public class BulletPenetration : MonoBehaviour
                 marcador = Resources.Load("Marcador") as GameObject;
                 GameObject marca = Instantiate(marcador);
                 marca.transform.position = hits[i].point;
+                Destroy(marca, 4f);
             }
         }
-        marcador = Resources.Load("Marcador") as GameObject;
-        GameObject marcaa = Instantiate(marcador);
-        marcaa.transform.position = entries[entries.Length-1].point;
-        marcaa.name = "Hitfinal";
+        //marcador = Resources.Load("Marcador") as GameObject;
+        //GameObject marcaa = Instantiate(marcador);
+        //marcaa.transform.position = entries[entries.Length].point;
+        //marcaa.name = "Hitfinal";
       
      
            for (int i = 0; i < Mathf.CeilToInt(hits.Count / 2); i++)
@@ -157,21 +165,25 @@ public class BulletPenetration : MonoBehaviour
                 }
             }
         }
-        for (int i = 0; i < WallBang.Count; i++)
+        List<GameObject> Players = new List<GameObject>(16);
+        for (int i = 0; i < Distancias.Count; i++)
         {
             if (i == 5) break; // Maximo de wallbang que va a hacer
             calculateRes -= Distancias[i] 
                 * WallBang[i].value;
+            Debug.Log(Distancias[i] + " " + WallBang[i].value);
             float dañofinal =  calculateRes * daño / Resistencia;
             dañofinal = (dañofinal < 0) ? 0 : dañofinal;
-            if (entries[i].collider.CompareTag("Enemy"))
+            if (WallBang[i].gameObject.transform.GetComponent<Collider>().CompareTag("Enemy") && !Players.Contains(entries[i].transform.root.gameObject) &&dañofinal >0)
             {
-                entries[i].collider.gameObject.GetComponent<HitInfoSite>().Damage(dañofinal);
+                Debug.Log("EsEnemigo");
+                Players.Add(entries[i].transform.root.gameObject);
+                WallBang[i].gameObject.transform.GetComponent<HitInfoSite>().Damage(dañofinal);
             }
             Debug.Log(calculateRes+" "+ dañofinal +" "+WallBang.Count +" "+Distancias.Count);
             Debug.Log(i + "Daño final :"+dañofinal);
         }
-
+        Players.Clear();
     }
     public static float CalculateDrag(float velocityVec, float distance,float rhoo)
     {

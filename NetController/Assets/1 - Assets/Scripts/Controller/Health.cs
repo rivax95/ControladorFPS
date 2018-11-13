@@ -23,6 +23,8 @@ public class Health : MonoBehaviour {
     public Transform Respawn;
     private Controller control;
     public static Health Instance;
+    public Collider[] Ragdol;
+    public Collider[] LiveColiders;
     public void Start()
     {
         control = this.gameObject.GetComponent<Controller>();
@@ -53,12 +55,16 @@ public class Health : MonoBehaviour {
     }
     public void Died()
     {
+        for (int i = 0; i < Ragdol.Length; i++)
+        {
+            Ragdol[i].enabled = true;
+        }
         WeaponManager.instance.dropIstantiate(WeaponManager.instance.WeaponbaseCurrent.gameObject);
         foreach (Transform item in WeaponFather.transform)
         {
             Destroy(item.gameObject);
         }
-
+        value = 100f;
         this.gameObject.GetComponent<Animator>().enabled = false;
     //    this.gameObject.GetComponent<Controller>().enabled = false;
         this.gameObject.GetComponent<MauseLook>().enabled = false;
@@ -68,6 +74,10 @@ public class Health : MonoBehaviour {
     }
     public void revive(Transform Respawn)
     {
+        for (int i = 0; i <LiveColiders.Length; i++)
+        {
+           LiveColiders[i].enabled = true;
+        }
         this.gameObject.GetComponent<Animator>().enabled = true;
        // this.gameObject.GetComponent<Controller>().enabled = true;
         this.gameObject.GetComponent<MauseLook>().enabled = true;
@@ -76,13 +86,14 @@ public class Health : MonoBehaviour {
         camera.SetActive(false);
 
         GameObject DeffectWeapn= Instantiate(DeffectWeapon, WeaponFather.transform);
-      
+       
         this.transform.position = Respawn.position;
         WeaponManager.instance.ActualizarInventario();
         DeffectWeapn.SetActive(true);
     }
     IEnumerator RespawnCo()
     {
+
         yield return new WaitForSeconds(5f);
         revive(Respawn);
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   PenalizationCrounch: 0.05
   PenalizationMoving: 0.05
   PenalizationGrounded: 0.1
-  maxRecoilSpray: 0.107
+  maxRecoilSpray: 0.158
   Enfriamiento: 0.08
-  SprayShoot: 0.0253
-  SprayBase: 0.717
+  SprayShoot: 0.0295
+  SprayBase: 0.671
