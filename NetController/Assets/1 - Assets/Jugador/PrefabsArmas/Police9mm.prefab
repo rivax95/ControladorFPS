@@ -1852,7 +1852,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1060233862839508}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -1933,7 +1933,7 @@ Animator:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1060233862839508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 0d0eae4b21c22ef419d5e2e154c8135f, type: 3}
   m_Controller: {fileID: 9100000, guid: 3e0df19070bce404dab20dc80a7fa8f2, type: 2}
   m_CullingMode: 1
@@ -1949,11 +1949,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1060233862839508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5d4e1881ea000f4db0ae16d33cbdf6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireLock: 0
   Shoot: 0
   isReloading: 0
   Fire: {fileID: 8300000, guid: 4ba9bafda0e84cf4e8e2012ae9a60e56, type: 3}
@@ -1962,21 +1963,29 @@ MonoBehaviour:
   MagOutSound: {fileID: 8300000, guid: 30f315ff55b6a1a45a8b6de2bdf24a37, type: 3}
   MagInSound: {fileID: 8300000, guid: e589257cb9eedf74a8e505318a6e7f98, type: 3}
   boltSound: {fileID: 8300000, guid: be84c78cd01fa6044ab5e4869890ef4d, type: 3}
-  Scriptx: {fileID: 0}
+  RecoilAfect: {fileID: 0}
+  SpraySystem: {fileID: 0}
   muzzleFlash: {fileID: 198980956208971268}
   bloodFX: {fileID: 198000011254678926, guid: abb9f519b142e304d9c45b56afa768bc, type: 2}
+  SprayConf: {fileID: 0}
   Name: 
+  BulletsPerShoot: 0
   isPistol: 1
+  MarkedShoots: 0
   ShootRayLayer:
     serializedVersion: 2
     m_Bits: 1025
   fireMode: 0
   TipoDeArma: 0
   damage: 20
+  Resistencia: 0
+  SprayShoot: 0.01
   fireRate: 0.25
   bulletsInClip: 12
+  spreatBase: 0
   spreat: 0.1
   recoil: 2
+  Distance: 0
   penetration: 20
   minpenetration: 5
   clipSize: 12

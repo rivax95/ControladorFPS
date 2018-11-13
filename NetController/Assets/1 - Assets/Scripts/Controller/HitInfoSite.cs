@@ -7,10 +7,12 @@ public class HitInfoSite : MonoBehaviour,IDamageable<float> {
     {
         Cabeza,Hombro,Brazo,Mano,TroncoInferior,Pecho,Pierna,Pie
 }
+    Health SettingsHealth;
     public float value;
     public Part Site;
 	// Use this for initialization
 	void Start () {
+        SettingsHealth = transform.root.GetComponent<Health>();
         switch (Site)
         {
             case Part.Cabeza:
@@ -47,8 +49,8 @@ public class HitInfoSite : MonoBehaviour,IDamageable<float> {
 
     public void Damage(float damageTaken)
     {
-        Health.Instance.value -= damageTaken * value;
-        Debug.Log("Daño recibido= " + damageTaken * value);
+        SettingsHealth.value-= damageTaken * value;
+        Debug.Log("Daño recibido= " + damageTaken * value +"TOTAAAAAAAAAAAL");
     }
 }
 
