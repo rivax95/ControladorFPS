@@ -144,19 +144,21 @@ public class BulletPenetration : MonoBehaviour
 
        // Debug.Log( Vector3.Distance( hits[1].point,hits[2].point));
     }
-    public void AplicarDaño(float Resistencia,float daño)
+    public void AplicarDaño(float Resistencia,float daño,Vector3 origin)
     {
+        entries = entries.OrderBy(o => Vector3.Distance(o.point, origin)).ToArray<RaycastHit>();
+        exits = exits.OrderBy(o => Vector3.Distance(o.point, origin)).ToArray<RaycastHit>();
         WallBang.Clear();
         float calculateRes = Resistencia;
-        Debug.Log(entries.Length);
+        //Debug.Log(entries.Length);
         for (int i = 0; i < entries.Length; i++)
         {
             if (entries[i].collider != null)
             {
                 if (entries[i].collider.GetComponent<Penetration>() != null)
                 {
-                    WallBang.Add(intersections[i].collider.GetComponent<Penetration>());
-                    Debug.Log(i + "entries");
+                    WallBang.Add(entries[i].collider.GetComponent<Penetration>());
+                    //Debug.Log(i + "entries");
                 }
                 else
                 {
@@ -171,17 +173,17 @@ public class BulletPenetration : MonoBehaviour
             if (i == 5) break; // Maximo de wallbang que va a hacer
             calculateRes -= Distancias[i] 
                 * WallBang[i].value;
-            Debug.Log(Distancias[i] + " " + WallBang[i].value);
+            //Debug.Log(Distancias[i] + " " + WallBang[i].value);
             float dañofinal =  calculateRes * daño / Resistencia;
             dañofinal = (dañofinal < 0) ? 0 : dañofinal;
-            if (WallBang[i].gameObject.transform.GetComponent<Collider>().CompareTag("Enemy") && !Players.Contains(entries[i].transform.root.gameObject) &&dañofinal >0)
+            if (WallBang[i].gameObject.transform.GetComponent<Collider>().CompareTag("Enemy") && !Players.Contains(WallBang[i].transform.root.gameObject) &&dañofinal >0)
             {
-                Debug.Log("EsEnemigo");
+                //Debug.Log("EsEnemigo");
                 Players.Add(entries[i].transform.root.gameObject);
                 WallBang[i].gameObject.transform.GetComponent<HitInfoSite>().Damage(dañofinal);
             }
-            Debug.Log(calculateRes+" "+ dañofinal +" "+WallBang.Count +" "+Distancias.Count);
-            Debug.Log(i + "Daño final :"+dañofinal);
+            //Debug.Log(calculateRes+" "+ dañofinal +" "+WallBang.Count +" "+Distancias.Count);
+            //Debug.Log(i + "Daño final :"+dañofinal);
         }
         Players.Clear();
     }

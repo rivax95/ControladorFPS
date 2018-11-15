@@ -9,12 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34263d44d1888594aaec3f2ff86fa8b1, type: 3}
-  m_Name: Escopeta
+  m_Name: Sniper
   m_EditorClassIdentifier: 
-  PenalizationCrounch: 0.0408
-  PenalizationMoving: 0.0398
-  PenalizationGrounded: 0.0556
-  maxRecoilSpray: 0.5
-  Enfriamiento: 0.13
-  SprayShoot: 0.0658
-  SprayBase: 0.836
+  PenalizationCrounch: 0.0504
+  PenalizationMoving: 0.1
+  PenalizationGrounded: 0.1
+  maxRecoilSpray: 0.199
+  Enfriamiento: 0.085
+  SprayShoot: 0.01
+  SprayBase: 0.3

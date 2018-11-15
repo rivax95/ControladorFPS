@@ -224,7 +224,7 @@ public class WeaponBase : MonoBehaviour {
             Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
           //  balaPen.Raycasting(1200, ShootPoint.transform.position, direct, ShootRayLayer);
             balaPen.BidirectionalRaycastNonAlloc(ShootPoint.transform.position, 0.1f, direct, Distance,ShootRayLayer,  balaPen.entries,   balaPen.exits,   balaPen.intersections, "Enemy", MarkedShoots);
-            balaPen.AplicarDaño(Resistencia,damage);
+            balaPen.AplicarDaño(Resistencia,damage,ShootPoint.transform.position);
             //Debug.Log("Disparo el hit: "+balaPen.intersections.Count);
             
         }
@@ -235,7 +235,7 @@ public class WeaponBase : MonoBehaviour {
        return Vector3.Lerp(shootpoint.TransformDirection(Vector3.forward * 100), Random.onUnitSphere,spread);
    }
 
-    void FIRE()
+   public virtual  void FIRE()
     {
         Shoot = true;
         audiosource.PlayOneShot(Fire);
