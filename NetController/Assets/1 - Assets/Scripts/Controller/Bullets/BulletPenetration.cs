@@ -173,12 +173,21 @@ public class BulletPenetration : MonoBehaviour
             if (i == 5) break; // Maximo de wallbang que va a hacer
             calculateRes -= Distancias[i] 
                 * WallBang[i].value;
+<<<<<<< HEAD
             //Debug.Log(Distancias[i] + " " + WallBang[i].value);
             float dañofinal =  calculateRes * daño / Resistencia;
             dañofinal = (dañofinal < 0) ? 0 : dañofinal;
             if (WallBang[i].gameObject.transform.GetComponent<Collider>().CompareTag("Enemy") && !Players.Contains(WallBang[i].transform.root.gameObject) &&dañofinal >0)
             {
                 //Debug.Log("EsEnemigo");
+=======
+            Debug.Log(Distancias[i] + " " + WallBang[i].value);
+            float dañofinal =  calculateRes * daño / Resistencia;
+            dañofinal = (dañofinal < 0) ? 0 : dañofinal;
+            if (WallBang[i].gameObject.transform.GetComponent<Collider>().CompareTag("Enemy") && !Players.Contains(entries[i].transform.root.gameObject) &&dañofinal >0)
+            {
+                Debug.Log("EsEnemigo");
+>>>>>>> Controller2
                 Players.Add(entries[i].transform.root.gameObject);
                 WallBang[i].gameObject.transform.GetComponent<HitInfoSite>().Damage(dañofinal);
             }

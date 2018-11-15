@@ -224,7 +224,11 @@ public class WeaponBase : MonoBehaviour {
             Vector3 direct = CrearSpread(spreat, ShootPoint.transform);
           //  balaPen.Raycasting(1200, ShootPoint.transform.position, direct, ShootRayLayer);
             balaPen.BidirectionalRaycastNonAlloc(ShootPoint.transform.position, 0.1f, direct, Distance,ShootRayLayer,  balaPen.entries,   balaPen.exits,   balaPen.intersections, "Enemy", MarkedShoots);
+<<<<<<< HEAD
             balaPen.AplicarDaño(Resistencia,damage,ShootPoint.transform.position);
+=======
+            balaPen.AplicarDaño(Resistencia,damage);
+>>>>>>> Controller2
             //Debug.Log("Disparo el hit: "+balaPen.intersections.Count);
             
         }
